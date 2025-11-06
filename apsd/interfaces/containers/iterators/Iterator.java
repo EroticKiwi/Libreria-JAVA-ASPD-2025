@@ -1,12 +1,17 @@
 package apsd.interfaces.containers.iterators;
 
-/** Interface: Iteratore arbitrario. */
+/**
+ * Interface: Iteratore arbitrario.
+ */
 public interface Iterator<Data> {
 
-  // IsValid
+    // IsValid
+    boolean IsValid();
 
-  // Reset
+    // Reset
+    void Reset();
 
-  // GetCurrent
+    // GetCurrent
+    Data GetCurrent();
 
 }

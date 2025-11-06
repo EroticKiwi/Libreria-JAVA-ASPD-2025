@@ -1,0 +1,58 @@
++Cos'è cosa?
+
+[TRAITS]
+- Clearable: Gli oggetti che la implementano possono svuotarla.
+- Reallocable: Gli oggetti che la implementano possono essere riallocati.
+- Predicate: Il predicate è fondamentalmente un oggetto che contiene una funzione che viene applicata su elementi in situazioni di Traverse (E' una funzione booleana).
+- Accumulator: L'accumulatore è in sintesi un Predicate che però serve nello specifico per operazioni di accumulazione (E' una funzione accumulatrice).
+- Reference: E' un riferimento IMMUTABILE ad un dato. Praticamente simula un puntatore che però una volta creato non può più cambiare valore.
+- Mutable Reference: E' un riferimento MUTABILE ad un dato. Ancora, simula un puntatore ma questa volta può puntare a cose diverse dopo la sua istanziazione.
+
+[UTILITIES (Classi)]
+- Natural: Contiene un numero in formato "long" ed è immutabile. Ogni sua operazione restituirà un NUOVO oggetto Natural. Simile alle stringhe per immutabilità.
+- MutableNatural: E' praticamente un Natural che però può cambiare. Dunque si può modificare il dato all'interno.
+(Tenendo a mente che un oggetto Natural nat è una REFERENCE ad oggetto di Natural (o MutableNatural) semplicemente uno è immutabile e l'altro no. E' possibile la conversione.)
+- Box: E' una MutableReference (e dunque simula i puntatori di C o C++) che implementa i metodi della MutableReference.
+
+[INTERFACES/CONTAINERS/BASE]
+- Container [Interfaccia]: Base di tutti i container.
+- Membership Container [Interfaccia]: Container con supporto alla verifica di appartenenza.
+- InsertableContainer [Interfaccia]: Container che permette di inserire dati.
+- RemovableContainer [Interfaccia]: Container che permette di rimuovere dati.
+- Clearable Container [Interfaccia]: Container che può essere svuotato. Estende il Trait Clearable.
+- Reallocable Container [Interfaccia]: ClearableContainer che estende il Trait Reallocable e dunque gli oggetti di questo tipo possono essere riallocati. (LA CLEAR DOVREBBE CHIAMARE REALLOC A 0!)
+- Resizable Container [Interfaccia]: ReallocableContainer he permette l'espansione e la riduzione del numero di elementi PRESENTI nel container.
+
+( Reallocable VS Resizable | Reallocable si occupa di gestire la capacity, Resizable si occupa di gestire la size. Un interfaccia/classe che implementa Resizable vuole aumentare sia la sua capacity che il suo numero di elementi contenuti. Un interfaccia/classe che estende o implementa solo Reallocable vuole anche la possibilità di gestire la propria capacity (oltre a fare le sue cose) )
+
+- Traversable Container [Interfaccia]: Membership Container che può essere attraversato a patto di dover eseguire una funzione su tutti gli elementi. I metodi di Traverse continuano a scorrere fino alla fine dei dati o finchè non ricevono true dalla funzione data al metodo. L'attraversamento è totale, dunque se si attraversa si fa su tutto il container e ci si ferma in un certo momento.
+
+- Iterable Container [Interfaccia]: Traversable Container che può essere attraversato in maniera più controllata. Si può scorrere di un elemento, fermarsi, riprendere da dove si era fermati ecc..
+
+- Sorted Iterable Container [Interfaccia]: Iterable Container con dati ordinati.
+
+- Mutable Iterable [Interfaccia]: Iterable Container che dà la possibilità di modificare l'elemento corrente.
+
+[INTERFACES/CONTAINERS/ITERATORS]:
+- Iterator [Interfaccia]: Gli oggetti che implementano quest'interfaccia stanno sui dati di una struttura.
+- MutableIterator [Interfaccia]: E' un Iterator che permette di cambiare i dati su cui passa.
+- Forward Iterator [Interfaccia]: E' un Iterator che va in avanti sui dati.
+- Mutable Forward Iterator [Interfaccia]: E' un MutableIterator che va in avanti sui dati.
+- Backward Iterator [Interfaccia]: E' un Iterator che va indietro sui dati.
+- Mutable Backward Iterator [Interfaccia]: E' un MutableIterator che va indietro sui dati.
+
+(In particolare, gli Iterable Container e interfacce/classi che ereditano o implementano da Iterable Container sono i candidati primari per l'utilizzo degli Iteratori.)
+
+[INTERFACES/CONTAINERS/SEQUENCES]
+- Sequence [Interfaccia]: Iterable Container che permette di leggere dati e cercare dati tramite posizione.
+- Sorted Sequence [Interfaccia]: Sequence con dati ordinati.
+- Mutable Sequence [Interfaccia]: Sequence dai dati mutabili. (Permette la MODIFICA di dati a specifiche posizioni)
+- Insertable at Sequence [Interfaccia]: Sequence che permette l'inserimento di un dato ad una specifica posizione.
+- Removable at Sequence [Interfaccia]: Sequence che permette la rimozione di un dato ad una specifica posizione.
+
+(Insertable e Removable at Sequence danno la possibilità di aggiungere o rimuovere a certe posizioni, ma Mutable Sequence permette di MODIFICARE in quelle posizioni. Ecco la distinzione.)
+
+- Vector [Interfaccia]: Mutable Interface che può effettuare operazioni di Shift dei dati.
+- DynVector [Interfaccia]: Vector con la possibilità di inserimento e rimozione dei dati.
+
+( Vector VS DynVector - Vector permette la modifica dei dati, mentre DynVector comporta anche inserimento e rimozione dei dati)
