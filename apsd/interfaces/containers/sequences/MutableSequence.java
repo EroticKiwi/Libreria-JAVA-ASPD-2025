@@ -1,35 +1,82 @@
 package apsd.interfaces.containers.sequences;
 
+import apsd.classes.utilities.Box;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.MutableIterableContainer;
 
 // import apsd.interfaces.containers.base.MutableIterableContainer;
 // import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
-/** Interface: Sequence & MutableIterableContainer con supporto alla scrittura tramite posizione. */
+/**
+ * Interface: Sequence & MutableIterableContainer con supporto alla scrittura tramite posizione.
+ */
 public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableContainer<Data> { // Must extend Sequence and MutableIterableContainer
 
-  // SetAt
-  default void SetAt(Data dat, Natural pos){
-    
-  }
+    // SetAt
+    default void SetAt(Data dat, Natural posNat) { /* Mezzo duplicato di GetAt() */
 
-  // GetNSetAt
+        long size = Size().ToLong();
 
-  // SetFirst
+        if (posNat.ToLong() >= size) {
+            // Forse dovremmo lanciare un eccezione
+        }
 
-  // GetNSetFirst
+        long halfSize = Size().ToLong() / 2;
+        long pos = posNat.ToLong();
 
-  // SetLast
+        Box<Long> indexBox = new Box<Long>();
 
-  // GetNSetLast
+        if (pos > halfSize) {
+            long s = Size().ToLong() - 1;
+            indexBox.Set(s);
 
-  // Swap
+            TraverseBackward(currentElement -> {
+                if (indexBox.Get() == pos) {
+                    currentElement = dat;
+                    return true;
+                } else {
+                    indexBox.Set(indexBox.Get() - 1);
+                    return false;
+                }
+            });
+        } else {
+            indexBox.Set(0L);
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Sequence                         */
-  /* ************************************************************************ */
+            TraverseForward(currentElement -> {
+                if (indexBox.Get() == pos) {
+                    currentElement = dat;
+                    return true;
+                } else {
+                    indexBox.Set(indexBox.Get() + 1);
+                    return false;
+                }
+            });
+        }
+    }
 
-  // ...
+    // GetNSetAt
+
+    // SetFirst
+    default void SetFirst(Data dat){
+        SetAt(dat, Natural.ZERO);
+    }
+
+    // GetNSetFirst
+
+    // SetLast
+    default void SetLast(Data dat){
+        Natural pos = Natural.Of(Size().ToLong() - 1);
+        SetAt(dat, pos);
+    }
+
+    // GetNSetLast
+
+    // Swap
+
+    /* ************************************************************************ */
+    /* Override specific member functions from Sequence                         */
+    /* ************************************************************************ */
+
+    // ...
 
 }
