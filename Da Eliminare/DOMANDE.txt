@@ -1,0 +1,4 @@
+DOMANDE:
+
+1) All vs Some in Insertable e Removable Containers, qual è la differenza?
+In particolare, RemoveAll vs RemoveSome che differenza c'è?

@@ -1,12 +1,22 @@
 package apsd.interfaces.containers.base;
 
-/** Interface: Container con supporto alla rimozione di un dato. */
+import apsd.classes.utilities.Box;
+
+/**
+ * Interface: Container con supporto alla rimozione di un dato.
+ */
 public interface RemovableContainer<Data> { // Must extend Container
 
-  // Remove
+    // Remove
+    boolean Remove(Data dat);
 
-  // RemoveAll
+    // RemoveAll
+    default boolean RemoveAll(TraversableContainer<Data> con) {
 
-  // RemoveSome
+    }
 
+    // RemoveSome
+    default boolean RemoveSome(TraversableContainer<Data> con) {
+
+    }
 }

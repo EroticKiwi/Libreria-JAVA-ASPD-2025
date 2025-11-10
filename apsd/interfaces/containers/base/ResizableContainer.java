@@ -1,31 +1,49 @@
 package apsd.interfaces.containers.base;
 
-// import apsd.classes.utilities.Natural;
+import apsd.classes.utilities.Natural;
 
-/** Interface: ReallocableContainer che è espandibile e riducibile. */
-public interface ResizableContainer { // Must extend ReallocableContainer
+/**
+ * Interface: ReallocableContainer che è espandibile e riducibile.
+ */
+public interface ResizableContainer extends ReallocableContainer { // Must extend ReallocableContainer
 
-  double THRESHOLD_FACTOR = 2.0; // Must be strictly greater than 1.
+    double THRESHOLD_FACTOR = 2.0; // Must be strictly greater than 1.
 
-  // Expand
+    // Expand
+    void Expand(Natural num);
 
-  // Reduce
+    default void Expand() {
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Container                        */
-  /* ************************************************************************ */
+    }
 
-  // ...
+    // Reduce
+    void Reduce(Natural num);
 
-  /* ************************************************************************ */
-  /* Override specific member functions from ReallocableContainer             */
-  /* ************************************************************************ */
+    default void Reduce() {
+    }
 
-  // ...
+    /* ************************************************************************ */
+    /* Override specific member functions from Container                        */
+    /* ************************************************************************ */
 
-  // @Override
-  // default void Shrink() {
-  //   if ((long) (THRESHOLD_FACTOR * SHRINK_FACTOR * Size().ToLong()) <= Capacity().ToLong()) ReallocableContainer.super.Shrink();
-  // }
+    // ...
+
+    /* ************************************************************************ */
+    /* Override specific member functions from ReallocableContainer             */
+    /* ************************************************************************ */
+
+    // ...
+
+    @Override
+    default void Grow(){ /* Controlla se abbiamo oltrepassato il Threshold, se sì allora facciamo una Grow*/
+        if ((long) (THRESHOLD_FACTOR * GROW_FACTOR * Size().ToLong()) >= Capacity().ToLong())
+            ReallocableContainer.super.Grow();
+    }
+
+    @Override
+    default void Shrink() { /* Controlla se siamo di molto al di sotto del Threshold, se sì facciamo una Shrink*/
+        if ((long) (THRESHOLD_FACTOR * SHRINK_FACTOR * Size().ToLong()) <= Capacity().ToLong())
+            ReallocableContainer.super.Shrink();
+    }
 
 }

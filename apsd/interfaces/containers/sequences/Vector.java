@@ -1,5 +1,6 @@
 package apsd.interfaces.containers.sequences;
 
+import apsd.classes.utilities.Box;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.ReallocableContainer;
 import apsd.interfaces.traits.Predicate;
@@ -79,8 +80,7 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
     // SubVector
     default Vector<Data> SubVector(Natural from, Natural to) {
-        long start = from.ToLong();
-        long end = from.ToLong();
+        return (Vector<Data>) SubSequence(from, to); /* Al 99% è sbagliato */
     }
 
     /* ************************************************************************ */
@@ -88,5 +88,8 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
     /* ************************************************************************ */
 
     // ...
+    default Natural Size(){
+
+    }
 
 }
