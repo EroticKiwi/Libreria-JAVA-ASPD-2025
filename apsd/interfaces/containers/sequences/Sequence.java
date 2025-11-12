@@ -96,9 +96,8 @@ public interface Sequence<Data> extends IterableContainer<Data> { // Must extend
             }
         });
 
-        if (foundBox.Get() == false) { /* Per evitare eccezioni, potremmo semplicemente ritornare la Size() o null */
-            throw new IllegalArgumentException("The data: " + dat + ", was not found in the container!");
-            // return null;
+        if (foundBox.Get() == false) {
+            return null;
         }
 
         return Natural.Of(posBox.Get());

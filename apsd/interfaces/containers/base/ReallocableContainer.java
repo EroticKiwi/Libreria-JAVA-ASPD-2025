@@ -18,6 +18,10 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable { 
     // Grow
     default void Grow() {
 
+        if(Capacity().ToLong() == Integer.MAX_VALUE){
+            throw new IllegalArgumentException("The container has already reached max capacity!");
+        }
+
         long currentCapacity = Capacity().ToLong();
 
         if (currentCapacity == 0) {
@@ -34,7 +38,7 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable { 
 
         long currentCapacity = Capacity().ToLong();
 
-        if(currentCapacity == Long.MAX_VALUE){
+        if(currentCapacity == Integer.MAX_VALUE){
             return;
         }
 

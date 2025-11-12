@@ -53,7 +53,7 @@ public interface Stack<Data> extends ClearableContainer, InsertableContainer<Dat
     @Override
     default boolean Insert(Data dat){
 
-        if(Size().ToLong() == Long.MAX_VALUE){ /* Non saprei, potrebbe essere inutile. */
+        if(Size().ToLong() == Integer.MAX_VALUE){ /* Non saprei, potrebbe essere inutile. */
             return false;
         }
 

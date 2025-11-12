@@ -88,6 +88,7 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
     /* ************************************************************************ */
 
     // ...
+    @Override
     default Natural Size(){
 
     }

@@ -35,6 +35,9 @@ public interface ResizableContainer extends ReallocableContainer { // Must exten
     // ...
 
     @Override
+    public abstract Natural Size();
+
+    @Override
     default void Grow(){ /* Controlla se abbiamo oltrepassato il Threshold, se sì allora facciamo una Grow*/
         if ((long) (THRESHOLD_FACTOR * GROW_FACTOR * Size().ToLong()) >= Capacity().ToLong())
             ReallocableContainer.super.Grow();
