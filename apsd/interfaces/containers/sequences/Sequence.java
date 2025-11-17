@@ -60,28 +60,16 @@ public interface Sequence<Data> extends IterableContainer<Data> { // Must extend
 
     // GetFirst
     default Data GetFirst() {
-        if (IsEmpty()) {
-            throw new IndexOutOfBoundsException("The container is empty!");
-        }
-
         return FIterator().GetCurrent();
     }
 
     // GetLast
     default Data GetLast() {
-        if (IsEmpty()) {
-            throw new IndexOutOfBoundsException("The container is empty!");
-        }
-
         return BIterator().GetCurrent();
     }
 
     // Search
     default Natural Search(Data dat) {
-
-        if (IsEmpty()) {
-            throw new IndexOutOfBoundsException("The container is empty!");
-        }
 
         Box<Long> posBox = new Box<Long>(0L);
         Box<Boolean> foundBox = new Box<Boolean>();

@@ -21,6 +21,7 @@ public interface Collection<Data> extends ClearableContainer, InsertableContaine
                 } else {
                     Remove(dat);
                     itr.Reset();
+                    /* Dopo la rimozione del dato, non possiamo più andare avanti o indietro con quell'iteratore, siccome si trova su un valore null. */
                 }
             }
         }

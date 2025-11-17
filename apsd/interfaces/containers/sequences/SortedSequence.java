@@ -27,7 +27,7 @@ public interface SortedSequence<Data extends Comparable<Data>> extends Sequence<
 
     // ...
     @Override
-    default Natural Search(Data dat) {
+    default Natural Search(Data dat) { /* Ottimizzato per i Vettori, O(log n). Per le Chain sarebbe O(n log n) dunque va fatto l'override nelle Chain. */
 
         long bottom = 0;
         long top = Size().ToLong() - 1;
@@ -39,11 +39,12 @@ public interface SortedSequence<Data extends Comparable<Data>> extends Sequence<
 
         while (bottom <= top) { /* Continuiamo fino a che c'è un intervallo valido */
 
-            currentDat = GetAt(Natural.Of(middle));
+            middle = (bottom + top) / 2;
+            currentDat = GetAt(Natural.Of(middle)); /* Ottimizzato per i Vettori, che usando gli array faranno un accesso O(1) sui dati che ci interessano in GetAt() overridato. */
             compareResult = dat.compareTo(currentDat);
 
             if (compareResult == 0) { /* Abbiamo trovato l'elemento che cercavamo */
-                Natural.Of(middle);
+                return Natural.Of(middle);
             }
 
             if (compareResult < 0) { /* L'elemento che cerchiamo è più piccolo */

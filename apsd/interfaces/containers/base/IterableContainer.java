@@ -18,6 +18,31 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> { //
     BackwardIterator<Data> BIterator();
 
     // IsEqual
+    default boolean IsEqual(IterableContainer<Data> otherContainer){
+
+        if(otherContainer == null || Size() != otherContainer.Size()){
+            return false;
+        }
+
+        if(this == otherContainer){
+            return true;
+        }
+
+        ForwardIterator<Data> iterator = FIterator();
+
+        /* Le size sono uguali */
+
+        while(iterator.IsValid()){
+
+            if(!otherContainer.Exists(iterator.GetCurrent())){
+                return false;
+            }
+
+            iterator.Next();
+        }
+
+        return true;
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from TraversableContainer             */

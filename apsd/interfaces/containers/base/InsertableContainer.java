@@ -21,18 +21,6 @@ public interface InsertableContainer<Data> extends Container { // Must extend Co
 
     // InsertSome
     default boolean InsertSome(TraversableContainer<Data> con) { /* Se inserisce almeno uno ritorna true, altrimenti false */
-
-        Box<Boolean> finalState = new Box<>(false);
-
-        con.TraverseForward(currentElement -> {
-
-            if(Insert(currentElement)){
-                finalState.Set(true);
-            }
-
-            return false;
-        });
-
-        return finalState.Get();
+        return false;
     }
 }
