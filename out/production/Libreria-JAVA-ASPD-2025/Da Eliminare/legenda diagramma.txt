@@ -4,6 +4,7 @@ Funzioni blu: "Funzione da implementare (override) in questa classe"
 
 NUOVO:
 
-funzioni nere: "definita da interfaccia, da implementare in classe"
+funzioni nere: "definita da interfaccia, da implementare in classe o interfaccia"
 funzioni blu: "funzione definita da un interfaccia implementata, dunque metodo da implementare nella classe attuale OPPURE fai override"
 funzioni verdi: "funzione di cui fare un implementazione "default" in questa interfaccia/classe"
+funzioni rosse: "funzione che ha già un implementazione ma diventa ABSTRACT"

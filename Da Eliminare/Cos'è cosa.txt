@@ -1,5 +1,12 @@
 Cos'è cosa?
 
+NOTA:
+
+SOLO I VETTORI TRATTANO I NULL
+LE LISTE NON POSSONO RICEVERE I NULL!!
+
+Nella RemoveOccurrencies si usa Reduce() alla fine
+
 [TRAITS]
 - Clearable: Gli oggetti che la implementano possono svuotarla.
 - Reallocable: Gli oggetti che la implementano possono essere riallocati.

@@ -13,13 +13,14 @@ public interface ResizableContainer extends ReallocableContainer { // Must exten
     void Expand(Natural num);
 
     default void Expand() {
-
+        Expand(Natural.ONE);
     }
 
     // Reduce
     void Reduce(Natural num);
 
     default void Reduce() {
+        Reduce(Natural.ONE);
     }
 
     /* ************************************************************************ */
@@ -28,6 +29,9 @@ public interface ResizableContainer extends ReallocableContainer { // Must exten
 
     // ...
 
+    @Override
+    public abstract Natural Size();
+
     /* ************************************************************************ */
     /* Override specific member functions from ReallocableContainer             */
     /* ************************************************************************ */
@@ -35,12 +39,21 @@ public interface ResizableContainer extends ReallocableContainer { // Must exten
     // ...
 
     @Override
-    public abstract Natural Size();
+    default void Grow(Natural num){ /* Controlla se abbiamo oltrepassato il Threshold, se sì allora facciamo una Grow*/
 
-    @Override
-    default void Grow(){ /* Controlla se abbiamo oltrepassato il Threshold, se sì allora facciamo una Grow*/
-        if ((long) (THRESHOLD_FACTOR * GROW_FACTOR * Size().ToLong()) >= Capacity().ToLong())
+        long neededSpace = Size().ToLong() + num.ToLong();
+
+        if(neededSpace <= Capacity().ToLong()){
+            return;
+        }
+
+        long doubleCapacity = (long)(Capacity().ToLong() * GROW_FACTOR);
+
+        if(doubleCapacity >= neededSpace){ /* Semplicemente moltiplicando abbiamo abbastanza spazio. */
             ReallocableContainer.super.Grow();
+        } else { /* Moltiplicare per 2 non è sufficiente, dobbiamo aggiungere precisamente lo spazio richiesto */
+            ReallocableContainer.super.Grow(num);
+        }
     }
 
     @Override

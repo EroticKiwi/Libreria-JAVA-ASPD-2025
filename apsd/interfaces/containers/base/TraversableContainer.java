@@ -8,17 +8,14 @@ import apsd.interfaces.traits.Predicate;
 
 import java.util.Objects;
 
-// import apsd.classes.utilities.MutableNatural;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.traits.Accumulator;
-// import apsd.interfaces.traits.Predicate;
 /**
  * Interface: MembershipContainer con supporto all'attraversamento.
  */
+
 public interface TraversableContainer<Data> extends MembershipContainer<Data> { // Must extend MembershipContainer
 
     // TraverseForward
-    public boolean TraverseForward(Predicate<Data> predicate); /**/
+    public boolean TraverseForward(Predicate<Data> predicate);
 
     // TraverseBackward
     public boolean TraverseBackward(Predicate<Data> predicate);

@@ -11,16 +11,35 @@ public interface InsertableContainer<Data> extends Container { // Must extend Co
     public boolean Insert(Data dat);
 
     // InsertAll
-    default boolean InsertAll(TraversableContainer<Data> con) { /* Inserisce tutti, si ferma se uno non viene inserito e ritorna false */
-        boolean finalState = con.TraverseForward(currentElement -> {
-            return !Insert(currentElement);
+    default boolean InsertAll(TraversableContainer<Data> con) {
+
+        Box<Boolean> insertedAll =  new Box<Boolean>(true);
+
+        con.TraverseForward(currentElement -> {
+            if(!Insert(currentElement)){
+                insertedAll.Set(false);
+            }
+
+            return false;
         });
 
-        return !finalState;
+        return insertedAll.Get();
     }
 
     // InsertSome
-    default boolean InsertSome(TraversableContainer<Data> con) { /* Se inserisce almeno uno ritorna true, altrimenti false */
-        return false;
+    default boolean InsertSome(TraversableContainer<Data> con) {
+
+        Box<Boolean> insertedAtLeastOne =  new Box<Boolean>(false);
+
+        con.TraverseForward(currentElement -> {
+            if(Insert(currentElement)){
+                insertedAtLeastOne.Set(true);
+            }
+
+            return false;
+        });
+
+        return insertedAtLeastOne.Get();
+
     }
 }

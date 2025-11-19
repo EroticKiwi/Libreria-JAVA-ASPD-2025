@@ -1,5 +1,0 @@
-DOMANDE:
-
-1) Differenza specifica tra ReallocableContainer e ResizableContainer.
-Reallocable si preoccupa solo dello spazio in memoria mentre Resizable si occupa anche della gestione vera e propria dei dati CONTENUTI nel Container?
-Size e Capacity si disaccoppiano in Resizable?

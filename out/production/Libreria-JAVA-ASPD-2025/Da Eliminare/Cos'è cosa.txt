@@ -1,4 +1,11 @@
-+Cos'è cosa?
+Cos'è cosa?
+
+NOTA:
+
+SOLO I VETTORI TRATTANO I NULL
+LE LISTE NON POSSONO RICEVERE I NULL!!
+
+Nella RemoveOccurrencies si usa Reduce() alla fine
 
 [TRAITS]
 - Clearable: Gli oggetti che la implementano possono svuotarla.
@@ -56,3 +63,22 @@
 - DynVector [Interfaccia]: Vector con la possibilità di inserimento e rimozione dei dati.
 
 ( Vector VS DynVector - Vector permette la modifica dei dati, mentre DynVector comporta anche inserimento e rimozione dei dati)
+
+( Nota importante sulle operazioni "posizionali". GetAt() e SetAt() o qualsiasi operazione di natura posizionale in realtà dipende dalle classi che poi implementeranno quella data interfaccia. Una GetAt() per i Vettori sarà diversa da una GetAt() per le Chain, siccome uno ha l'accesso O(1) dato l'accesso posizionale dei vettori, e l'altra dovrà SCORRERE fino ad arrivare lì. Dunque GetAt() è un accesso posizionale solo a livello concettuale, fare arr[n] è un accesso posizionale VERO.)
+
+[INTERFACES/CONTAINERS/COLLECTIONS]
+- Collection [Interfaccia]: Un Iterable Container che permette l'inserimento, la rimozione e la clear dei propri contenuti. NON POSIZIONALE, NON ORDINATA.
+- Set [Interfaccia]: Una collection che permette le operazioni sugli insiemi (Unione, Differenza, Intersezione). Un Set non permette duplicazione degli elementi.
+- Ordered Set [Interfaccia]: Un set dove gli elementi sono comparabili tra loro, dunque è "ordinato" a livello di valori ma non essendoci l'accesso posizionale dobbiamo comunque esaminare tutti gli elementi durante le ricerche. (L'Ordered Set ha comunque un ordine in base ai valori, dunque è sorted tra virgolette.)
+- Chain [Interfaccia]: E' sia un Set che una RemovableAtSequence (dunque una sequenza con accesso posizionale), e permette operazioni di Inserimento, Rimozione, Rimozione posizionale e pulizia del container. Dunque è una struttura dati posizionale che permette anche operazioni NON dettate dalla posizione.
+
+(Nota sulle Sequence VS Strutture non posizionali: La Sequence e la Mutable Sequence permettono le loro operazioni su base esclusivamente POSIZIONALE. Le strutture non posizionali permettono operazioni che non sono basate sulla posizione degli elementi.)
+
+- Ordered Chain [Interfaccia]: Una Chain che ha sia l'accesso posizionale che un ordinamento dei propri elementi grazie a OrderedSet.
+- List [Interfaccia]: Una Chain che permette operazioni di pulizia, inserimento e rimozione, oltre che inserimento, modifica e rimozione basati sulla posizione.
+- Ordered List [Interfaccia]: Una Lista ad elementi comparabili tra di loro e dunque ordinati.
+- Sorted Chain [Interfaccia]: Una Chain ad elementi ordinati, e che permette l'accesso posizionale, che estende da Sorted Sequence.
+
+(DIFFERENZA TRA VETTORI E CHAIN: (PENSA SEMPRE PER BENE ALLE STRUTTURE DATI VERE E PROPRIE CHE QUESTE "FAMIGLIE" DI SEQUENZE USERANNO NELLE CLASSI!)
+Un Vector, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() sfruttando gli indici e accedendo ad un array. Dunque GetAt() di un Vettore alla fine sarà O(1), ha l'accesso posizionale A LIVELLO DI STRUTTURA DATI, non solo concettuale.
+Una Chain, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() e dovranno esaminare uno ad uno i dati. Dunque GetAt() di una Chain alla fine sarà O(n), devi scorrere fino all'elemento n PER FORZA. )
