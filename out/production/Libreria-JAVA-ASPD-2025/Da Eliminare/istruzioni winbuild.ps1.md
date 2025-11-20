@@ -1,4 +1,4 @@
-powershell.exe -ExecutionPolicy Bypass -File .\\winbuild.ps1 \[funzione]
+powershell.exe -ExecutionPolicy Bypass -File .\\winbuild.ps1 [funzione]
 
 
 

@@ -10,6 +10,14 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
 
     // LinearVectorBase
 
+    protected LinearVectorBase(){
+        super();
+    }
+
+    public LinearVectorBase(Natural size){
+        super(size);
+    }
+
     /* ************************************************************************ */
     /* Override specific member functions from ReallocableContainer             */
     /* ************************************************************************ */
@@ -17,11 +25,19 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
     // ...
 
     @Override
-    public void Realloc(Natural num){ /* Potremmo dover cambiare il modificatore d'accesso a protected o private */
+    public void Realloc(Natural num){
+        Data[] oldArr = arr;
+        ArrayAlloc(num);
 
-        long newSize = num.ToLong() * (long) GROW_FACTOR;
+        if(oldArr == null || oldArr.length == 0){
+            return;
+        }
 
-        ArrayAlloc(Natural.Of(newSize));
+        long limit = oldArr.length > num.ToLong() ? num.ToLong() : oldArr.length;
+
+        for(int i = 0; i < limit; i++){
+            arr[i] = oldArr[i];
+        }
     }
 
     /* ************************************************************************ */
@@ -33,7 +49,7 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
     @Override
     public Data GetAt(Natural pos) {
 
-        if(pos.ToLong() < 0 || pos.ToLong() >= Size().ToLong()){
+        if(pos.ToLong() >= Size().ToLong()){
             return null; /* O lanciare eccezione */
         }
 

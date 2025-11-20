@@ -1,6 +1,8 @@
 file da rimuovere:
 
 tutti i .git
+la cartella .idea
+la cartella out
 
 legenda diagramma
 istruzioni winbuild.ps1

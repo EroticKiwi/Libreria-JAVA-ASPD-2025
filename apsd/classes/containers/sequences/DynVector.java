@@ -1,20 +1,28 @@
 package apsd.classes.containers.sequences;
 
-// import apsd.classes.containers.sequences.abstractbases.DynLinearVectorBase;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.classes.containers.sequences.abstractbases.DynLinearVectorBase;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.TraversableContainer;
 
-/** Object: Concrete dynamic (linear) vector implementation. */
-public class DynVector<Data> { // Must extend DynLinearVectorBase
+import apsd.classes.containers.sequences.abstractbases.DynLinearVectorBase;
 
-  // public DynVector()
+/**
+ * Object: Concrete dynamic (linear) vector implementation.
+ */
+public class DynVector<Data> extends DynLinearVectorBase<Data> { // Must extend DynLinearVectorBase
 
-  // public DynVector(Natural inisize)
+    public DynVector() {
+        super();
+    }
 
-  // public DynVector(TraversableContainer<Data> con)
+    public DynVector(Natural inisize){
+        super(inisize);
+    }
 
-  // protected DynVector(Data[] arr)
+    // public DynVector(TraversableContainer<Data> con)
 
-  // NewVector
+    // protected DynVector(Data[] arr)
+
+    // NewVector
 
 }

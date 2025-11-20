@@ -13,6 +13,14 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
     // DynLinearVectorBase
 
+    public DynLinearVectorBase() {
+        super();
+    }
+
+    public DynLinearVectorBase(Natural size) {
+        super(size);
+    }
+
     /* ************************************************************************ */
     /* Override specific member functions from Container                        */
     /* ************************************************************************ */
@@ -43,7 +51,7 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
     // ...
 
     @Override
-    public void Realloc(Natural num){
+    public void Realloc(Natural num) {
 
     }
 
@@ -52,5 +60,20 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
     /* ************************************************************************ */
 
     // ...
+
+    @Override
+    public void Expand(Natural num){
+        Grow(num);
+        size += num.ToLong();
+    }
+
+    @Override
+    public void Reduce(Natural num){
+        if(num.ToLong() > size){ /* Non si sa mai */
+            throw new IllegalArgumentException("Cannot reduce vector size to a value greater than its current size.");
+        }
+        size -= num.ToLong();
+        Shrink();
+    }
 
 }

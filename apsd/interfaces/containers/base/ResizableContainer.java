@@ -10,14 +10,14 @@ public interface ResizableContainer extends ReallocableContainer { // Must exten
     double THRESHOLD_FACTOR = 2.0; // Must be strictly greater than 1.
 
     // Expand
-    void Expand(Natural num);
+    void Expand(Natural num); /* Expand aumenta la Size() e controlla se aumentare anche la Capacity() */
 
     default void Expand() {
         Expand(Natural.ONE);
     }
 
     // Reduce
-    void Reduce(Natural num);
+    void Reduce(Natural num); /* Reduce diminuisce la Size() e controlla se ridurre anche la Capacity() */
 
     default void Reduce() {
         Reduce(Natural.ONE);
