@@ -19,8 +19,11 @@ public interface Stack<Data> extends ClearableContainer, InsertableContainer<Dat
     }
 
     // SwapTop
-    default Data SwapTop(Data swapDat){
-        /* ?? */
+    default void SwapTop(Data swapDat){
+        Data Top = Top();
+        Pop();
+        Push(swapDat);
+        Push(Top);
     }
 
     // TopNSwap
@@ -53,7 +56,7 @@ public interface Stack<Data> extends ClearableContainer, InsertableContainer<Dat
     @Override
     default boolean Insert(Data dat){
 
-        if(Size().ToLong() == Integer.MAX_VALUE){ /* Non saprei, potrebbe essere inutile. */
+        if(Size().ToLong() == Integer.MAX_VALUE){ /* Non saprei, potrebbe essere inutile o sbagliato. */
             return false;
         }
 

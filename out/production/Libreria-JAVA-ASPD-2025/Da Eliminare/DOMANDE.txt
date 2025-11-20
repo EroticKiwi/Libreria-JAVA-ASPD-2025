@@ -1,0 +1,14 @@
+DOMANDE:
+
+1) All vs Some in Insertable e Removable Containers, qual è la differenza?
+In particolare, RemoveAll vs RemoveSome che differenza c'è?
+
+
+QUANDO LANCIARE ECCEZIONI:
+
+Analizza il comportamento che ci si aspetta dal metodo.
+Se abbiamo per esempio una richiesta sbagliata da parte di chi chiama il metodo (per esempio chiamando alla posizione 15 di un array da 5) lanciamo un eccezione, altrimenti si ritorna un normale valore.
+
+Se accedo ad una lista vuota, in operazioni diverse dall'inserimento, lancio un eccezione.
+
+Se chiamo GetFirst() in una sequenza vuota ritorno NULL.

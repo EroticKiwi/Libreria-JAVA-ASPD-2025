@@ -34,7 +34,8 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable { 
         Realloc(Natural.Of(newCapacity));
     }
 
-    default void Grow(Natural capacityToAdd) { // Domanda al professore se a Grow passiamo il nuovo size oppure se gli passiamo di questo deve crescere
+    // Domanda al professore se a Grow passiamo il nuovo size oppure se gli passiamo di quanto deve crescere
+    default void Grow(Natural capacityToAdd) {
 
         long currentCapacity = Capacity().ToLong();
 

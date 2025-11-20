@@ -30,6 +30,8 @@ public interface Chain<Data> extends Set<Data>, RemovableAtSequence<Data> { // M
 
             return true;
         });
+
+        // Reduce();
     }
 
   // SubChain
@@ -39,9 +41,9 @@ public interface Chain<Data> extends Set<Data>, RemovableAtSequence<Data> { // M
   /* ************************************************************************ */
 
   // ...
-    @Override
+    /*@Override
     default Natural Search(Data dat){
 
-    }
+    }*/
 
 }

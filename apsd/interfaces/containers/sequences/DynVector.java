@@ -5,6 +5,8 @@ import apsd.interfaces.containers.base.ResizableContainer;
 
 public interface DynVector<Data> extends ResizableContainer, InsertableAtSequence<Data>, RemovableAtSequence<Data>, Vector<Data> { // Must extend ResizableContainer, InsertableAtSequence, RemovableAtSequence, and Vector
 
+    /* Userà gli array, dunque operazioni At = O(1) */
+
     /* ************************************************************************ */
     /* Override specific member functions from InsertableAtSequence             */
     /* ************************************************************************ */

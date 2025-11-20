@@ -15,7 +15,7 @@ public interface BackwardIterator<Data> extends Iterator<Data> { // Must extend 
     Data DataNPrev();
 
     // ForEachBackward
-    boolean ForEachBackward(Predicate<Data> fun){
+    default boolean ForEachBackward(Predicate<Data> fun){
         if(fun != null){
             while(IsValid()){
                 if(fun.Apply(DataNPrev())){

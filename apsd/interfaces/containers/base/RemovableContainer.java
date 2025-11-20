@@ -12,11 +12,33 @@ public interface RemovableContainer<Data> { // Must extend Container
 
     // RemoveAll
     default boolean RemoveAll(TraversableContainer<Data> con) {
+        Box<Boolean> removedAll = new Box<Boolean>(true);
 
+        con.TraverseForward(currentElement -> {
+            if (!Remove(currentElement)) {
+                removedAll.Set(false);
+            }
+
+            return false;
+        });
+
+        return removedAll.Get();
     }
 
     // RemoveSome
     default boolean RemoveSome(TraversableContainer<Data> con) {
+
+        Box<Boolean> removedAtLeastOne = new Box<Boolean>(false);
+
+        con.TraverseForward(currentElement -> {
+            if (Remove(currentElement)) {
+                removedAtLeastOne.Set(true);
+            }
+
+            return false;
+        });
+
+        return removedAtLeastOne.Get();
 
     }
 }

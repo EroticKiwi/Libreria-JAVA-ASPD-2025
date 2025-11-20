@@ -89,8 +89,9 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
     // ...
     @Override
+    /* Vector eredita Size() da ReallocableContainer e TraversableContainer(), dunque ne scegliamo una sola.*/
     default Natural Size(){
-
+        return ReallocableContainer.super.Size();
     }
 
 }
