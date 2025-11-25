@@ -4,8 +4,6 @@ import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.sequences.DynVector;
 
-import apsd.interfaces.containers.sequences.DynVector;
-
 /**
  * Object: Abstract dynamic circular vector base implementation.
  */
@@ -15,23 +13,62 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
     // DynCircularVectorBase
 
+    public DynCircularVectorBase() {
+        super();
+    }
+
+    public DynCircularVectorBase(Natural size) {
+        super(size);
+    }
+
+    public DynCircularVectorBase(TraversableContainer<Data> con) {
+        super(con);
+        size = con.Size().ToLong();
+    }
+
+    protected DynCircularVectorBase(Data[] arr) {
+        super(arr);
+        size = arr.length;
+    }
+
     /* ************************************************************************ */
     /* Override specific member functions from Container                        */
     /* ************************************************************************ */
 
     // ...
+    @Override
+    public Natural Size(){
+        return Natural.Of(size);
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from ClearableContainer               */
     /* ************************************************************************ */
 
     // ...
+    @Override
+    public void Clear() {
+        super.Clear();
+        size = 0L;
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from ReallocableContainer             */
     /* ************************************************************************ */
 
     // ...
+    @Override
+    public void Realloc(Natural num) {
+        long tempSize = size;
+
+        super.Realloc(num);
+
+        size = tempSize;
+
+        if (size > num.ToLong()) {
+            size = num.ToLong();
+        }
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from ResizableContainer               */
@@ -58,5 +95,11 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
     /* ************************************************************************ */
 
     // ...
+
+    @Override
+    protected void ArrayAlloc(Natural num) {
+        super.ArrayAlloc(num);
+        size = 0L;
+    }
 
 }

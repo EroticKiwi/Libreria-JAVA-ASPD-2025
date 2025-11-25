@@ -15,6 +15,8 @@ import java.security.InvalidParameterException;
  */
 abstract public class VectorBase<Data> implements Vector<Data> { // Must implement Vector
 
+    /* Potrebbe essere necessario creare un costruttore come VectorBase(Data[] arr), torniamo dopo i test */
+
     protected Data[] arr;
 
     protected VectorBase() { /* Chiamato dalle classi figlie */
@@ -24,6 +26,24 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
     // VectorBase
     public VectorBase(Natural size) { /* Chiamato da chi vuole creare un vettore */
         ArrayAlloc(size);
+    }
+
+    public VectorBase(TraversableContainer<Data> con){
+
+        this(con.Size());
+
+        MutableNatural index = new MutableNatural(0L);
+
+       con.TraverseForward(currentElement ->{
+           SetAt(currentElement, index.ToNatural());
+           index.Increment();
+           return false;
+       });
+
+    }
+
+    public VectorBase(Data[] arr){
+        NewVector(arr);
     }
 
     // NewVector
@@ -65,6 +85,87 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
     /* ************************************************************************ */
 
     // ...
+
+    @Override
+    public MutableForwardIterator<Data> FIterator() {
+        /* Facciamo una nested class */
+        return new MutableForwardIterator<Data>() {
+
+            final int origin = 0;
+            int pos = origin;
+
+            @Override
+            public boolean IsValid() {
+                if (pos < Size().ToLong()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public void Reset() {
+                pos = origin;
+            }
+
+            @Override
+            public Data GetCurrent() {
+                return arr[pos];
+            }
+
+            @Override
+            public void SetCurrent(Data dat) {
+                arr[pos] = dat;
+            }
+
+            @Override
+            public Data DatNNext() {
+                Data dat = GetCurrent();
+                pos++;
+                return dat;
+            }
+        };
+    }
+
+    @Override
+    public MutableBackwardIterator<Data> BIterator(){
+        return new MutableBackwardIterator<Data>() {
+
+            final int origin = (int) Size().ToLong() - 1;
+            int pos = origin;
+
+            @Override
+            public boolean IsValid() {
+                if (pos >= 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public void Reset() {
+                pos = origin;
+            }
+
+            @Override
+            public Data GetCurrent() {
+                return arr[pos];
+            }
+
+            @Override
+            public void SetCurrent(Data dat) {
+                arr[pos] = dat;
+            }
+
+            @Override
+            public Data DatNPrev() {
+                Data dat = GetCurrent();
+                pos--;
+                return dat;
+            }
+        };
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from Sequence                         */

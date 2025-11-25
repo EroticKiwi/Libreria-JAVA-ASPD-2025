@@ -81,4 +81,8 @@ Nella RemoveOccurrencies si usa Reduce() alla fine
 
 (DIFFERENZA TRA VETTORI E CHAIN: (PENSA SEMPRE PER BENE ALLE STRUTTURE DATI VERE E PROPRIE CHE QUESTE "FAMIGLIE" DI SEQUENZE USERANNO NELLE CLASSI!)
 Un Vector, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() sfruttando gli indici e accedendo ad un array. Dunque GetAt() di un Vettore alla fine sarà O(1), ha l'accesso posizionale A LIVELLO DI STRUTTURA DATI, non solo concettuale.
-Una Chain, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() e dovranno esaminare uno ad uno i dati. Dunque GetAt() di una Chain alla fine sarà O(n), devi scorrere fino all'elemento n PER FORZA. )
+Una Chain, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() e dovranno esaminare uno ad uno i dati. Dunque GetAt() di una Chain alla fine sarà O(n), devi scorrere fino all'elemento n PER FORZA.)
+
+(DIFFERENZA TRA CHAIN E LISTE:
+Una Chain permette operazioni di GetAt() e RemoveAt(), dunque operazioni di natura posizionale per la lettura e la rimozione ma in quanto a inserimento eredita solo da InsertableContainer, dunque permette l'inserimento NON posizionale (praticamente l'inserimento in coda.
+Una List permette le operazioni di una Chain (Dunque GetAt(), RemoveAt() e così via) ma permette anche operazioni di Inserimento posizionale (InsertAt), siccome eredita da InsertableAtSequence.)

@@ -2,39 +2,48 @@ package apsd.classes.containers.deqs;
 
 // import apsd.classes.containers.collections.concretecollections.VList;
 // import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.TraversableContainer;
-// import apsd.interfaces.containers.collections.List;
-// import apsd.interfaces.containers.deqs.Stack;
 
-/** Object: Wrapper stack implementation. */
-public class WStack<Data> { // Must implement Stack
+import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.interfaces.containers.collections.List;
+import apsd.interfaces.containers.deqs.Stack;
 
-  // protected final List<Data> lst;
+/**
+ * Object: Wrapper stack implementation.
+ */
+public class WStack<Data> implements Stack<Data> { // Must implement Stack
 
-  // public WStack()
+    protected final List<Data> lst;
 
-  // public WStack(List<Data> lst)
+    public WStack() {
 
-  // public WStack(TraversableContainer<Data> con)
+    }
 
-  // public WStack(List<Data> lst, TraversableContainer<Data> con)
+    public WStack(List<Data> lst) {
+        this.lst = lst;
+    }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Container                        */
-  /* ************************************************************************ */
+    public WStack(TraversableContainer<Data> con) {
+        
+    }
 
-  // ...
+    // public WStack(List<Data> lst, TraversableContainer<Data> con)
 
-  /* ************************************************************************ */
-  /* Override specific member functions from ClearableContainer               */
-  /* ************************************************************************ */
+    /* ************************************************************************ */
+    /* Override specific member functions from Container                        */
+    /* ************************************************************************ */
 
-  // ...
+    // ...
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Stack                            */
-  /* ************************************************************************ */
+    /* ************************************************************************ */
+    /* Override specific member functions from ClearableContainer               */
+    /* ************************************************************************ */
 
-  // ...
+    // ...
+
+    /* ************************************************************************ */
+    /* Override specific member functions from Stack                            */
+    /* ************************************************************************ */
+
+    // ...
 
 }

@@ -30,11 +30,10 @@ public interface Chain<Data> extends Set<Data>, RemovableAtSequence<Data> { // M
 
             return true;
         });
-
-        // Reduce();
     }
 
   // SubChain
+    /* default Chain<Data> SubChain(Natural from, Natural to) { } */
 
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */

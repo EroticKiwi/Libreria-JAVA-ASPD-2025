@@ -1,6 +1,8 @@
 package apsd.classes.containers.sequences;
 
 import apsd.classes.containers.sequences.abstractbases.LinearVectorBase;
+import apsd.classes.utilities.Box;
+import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
 
@@ -17,10 +19,27 @@ public class Vector<Data> extends LinearVectorBase<Data> { // Must extend Linear
         super(inisize);
     }
 
-    // public Vector(TraversableContainer<Data> con)
+    public Vector(TraversableContainer<Data> con){
+        super(con.Size());
 
-    // protected Vector(Data[] arr)
+        MutableNatural index = new MutableNatural(0L);
+
+        con.TraverseForward(currentElement -> {
+            SetAt(currentElement, index.ToNatural());
+            index.Increment();
+            return false;
+        });
+
+    }
+
+    protected Vector(Data[] arr){
+        super(arr);
+    }
 
     // NewVector
+    @Override
+    protected void NewVector(Data[] arr) {
+        this.arr = arr;
+    }
 
 }

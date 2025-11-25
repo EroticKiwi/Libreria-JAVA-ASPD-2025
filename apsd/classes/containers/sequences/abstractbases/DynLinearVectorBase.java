@@ -1,5 +1,6 @@
 package apsd.classes.containers.sequences.abstractbases;
 
+import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.sequences.DynVector;
@@ -19,6 +20,30 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
     public DynLinearVectorBase(Natural size) {
         super(size);
+    }
+
+    public DynLinearVectorBase(TraversableContainer<Data> con) {
+        super(con.Size());
+
+        MutableNatural index = new MutableNatural(0L);
+
+        con.TraverseForward(currentElement -> {
+            SetAt(currentElement, index.ToNatural());
+            index.Increment();
+            return false;
+        });
+
+        size = con.Size().ToLong();
+    }
+
+    public DynLinearVectorBase(Data[] arr){
+        super(arr);
+    }
+
+    @Override
+    protected void ArrayAlloc(Natural newsize) {
+        super.ArrayAlloc(newsize);
+        size = 0L;
     }
 
     /* ************************************************************************ */
@@ -53,6 +78,15 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
     @Override
     public void Realloc(Natural num) {
 
+        long tempSize = size;
+
+        super.Realloc(num);
+
+        size = tempSize;
+
+        if (size > num.ToLong()) {
+            size = num.ToLong();
+        }
     }
 
     /* ************************************************************************ */
@@ -62,14 +96,14 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
     // ...
 
     @Override
-    public void Expand(Natural num){
+    public void Expand(Natural num) {
         Grow(num);
         size += num.ToLong();
     }
 
     @Override
-    public void Reduce(Natural num){
-        if(num.ToLong() > size){ /* Non si sa mai */
+    public void Reduce(Natural num) {
+        if (num.ToLong() > size) { /* Non si sa mai */
             throw new IllegalArgumentException("Cannot reduce vector size to a value greater than its current size.");
         }
         size -= num.ToLong();

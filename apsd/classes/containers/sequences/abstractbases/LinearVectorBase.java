@@ -18,6 +18,14 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
         super(size);
     }
 
+    public LinearVectorBase(TraversableContainer<Data> con){
+        super(con.Size());
+    }
+
+    public LinearVectorBase(Data[] arr){
+        super(arr);
+    }
+
     /* ************************************************************************ */
     /* Override specific member functions from ReallocableContainer             */
     /* ************************************************************************ */

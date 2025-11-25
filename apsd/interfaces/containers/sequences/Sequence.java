@@ -3,10 +3,12 @@ package apsd.interfaces.containers.sequences;
 // import apsd.classes.utilities.Box;
 
 import apsd.classes.utilities.Box;
+import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.IterableContainer;
 import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
+import apsd.interfaces.traits.MutableReference;
 
 import java.util.Objects;
 
@@ -25,30 +27,30 @@ public interface Sequence<Data> extends IterableContainer<Data> { // Must extend
         long halfSize = size / 2;
 
         Box<Data> dataBox = new Box<Data>();
-        Box<Long> indexBox = new Box<Long>();
+        MutableNatural index = new MutableNatural(0L);
 
         if (pos > halfSize) {
             long s = Size().ToLong() - 1;
-            indexBox.Set(s);
+            index.Assign(s);
 
             TraverseBackward(currentElement -> {
-                if (indexBox.Get() == pos) {
+                if (index.ToLong() == pos) {
                     dataBox.Set(currentElement);
                     return true;
                 } else {
-                    indexBox.Set(indexBox.Get() - 1);
+                    index.Decrement();
                     return false;
                 }
             });
         } else {
-            indexBox.Set(0L);
+            index.Assign(0L);
 
             TraverseForward(currentElement -> {
-                if (indexBox.Get() == pos) {
+                if (index.ToLong() == pos) {
                     dataBox.Set(currentElement);
                     return true;
                 } else {
-                    indexBox.Set(indexBox.Get() + 1);
+                    index.Increment();
                     return false;
                 }
 
