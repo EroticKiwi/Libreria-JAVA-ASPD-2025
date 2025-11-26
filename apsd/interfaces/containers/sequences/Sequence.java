@@ -73,24 +73,16 @@ public interface Sequence<Data> extends IterableContainer<Data> { // Must extend
     // Search
     default Natural Search(Data dat) {
 
-        Box<Long> posBox = new Box<Long>(0L);
-        Box<Boolean> foundBox = new Box<Boolean>();
+        Data returnDat = null;
 
-        TraverseForward(currentElement -> {
-            if (Objects.equals(currentElement, dat)) {
-                foundBox.Set(true);
-                return true;
-            } else {
-                posBox.Set(posBox.Get() + 1);
-                return false;
+        for(long i = 0; i < Size().ToLong(); i++) {
+            Data currentDat = GetAt(Natural.Of(i)); /* Operazione O(1) sui vettori*/
+            if (Objects.equals(currentDat, dat)) {
+                return Natural.Of(i);
             }
-        });
-
-        if (foundBox.Get() == false) {
-            return null;
         }
 
-        return Natural.Of(posBox.Get());
+        return null;
     }
 
     // IsInBound

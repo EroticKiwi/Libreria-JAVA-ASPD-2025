@@ -188,26 +188,26 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public ForwardIterator<Data> FIterator() {
         return new ForwardIterator<Data>() {
 
-            MutableForwardIterator<Box<LLNode<Data>>> fIterator = FRefIterator();
+            final MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
 
             @Override
             public boolean IsValid() {
-                return fIterator.IsValid();
+                return iterator.IsValid();
             }
 
             @Override
             public void Reset() {
-                fIterator.Reset();
+                iterator.Reset();
             }
 
             @Override
             public Data GetCurrent() {
-                return fIterator.GetCurrent().Get().Get(); /* Box -> LLNode -> Data */
+                return iterator.GetCurrent().Get().Get(); /* Box -> LLNode -> Data */
             }
 
             @Override
             public Data DatNNext() {
-                return fIterator.DatNNext().Get().Get(); /* Box -> LLNode -> Data */
+                return iterator.DatNNext().Get().Get(); /* Box -> LLNode -> Data */
             }
 
         };
@@ -216,26 +216,27 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     @Override
     public BackwardIterator<Data> BIterator() {
         return new BackwardIterator<Data>() {
-            MutableBackwardIterator<Box<LLNode<Data>>> bIterator = BRefIterator();
+
+            final MutableBackwardIterator<Box<LLNode<Data>>> iterator = BRefIterator();
 
             @Override
             public boolean IsValid() {
-                return bIterator.IsValid();
+                return iterator.IsValid();
             }
 
             @Override
             public void Reset() {
-                bIterator.Reset();
+                iterator.Reset();
             }
 
             @Override
             public Data GetCurrent() {
-                return bIterator.GetCurrent().Get().Get();
+                return iterator.GetCurrent().Get().Get();
             }
 
             @Override
             public Data DatNPrev() {
-                return bIterator.DatNPrev().Get().Get();
+                return iterator.DatNPrev().Get().Get();
             }
         };
     }

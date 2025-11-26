@@ -2,7 +2,6 @@ package apsd.classes.containers.collections.concretecollections;
 
 import apsd.classes.containers.collections.concretecollections.bases.LLChainBase;
 import apsd.classes.containers.collections.concretecollections.bases.LLNode;
-// import apsd.classes.utilities.Box;
 import apsd.classes.utilities.Box;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
@@ -28,7 +27,9 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
     protected LLList(long size, LLNode<Data> head, LLNode<Data> tail) {
 
-        /* Il costruttore è protetto dunque siamo NOI a chiamarlo internamente. Testiamo e vediamo come va. */
+        /* Il costruttore è protetto dunque siamo NOI a chiamarlo internamente, passandogli i giusti parametri. */
+        /*Testiamo e vediamo come va. */
+
         /*if (size == 0 || head == null || tail == null) {
             throw new InvalidParameterException("Invalid parameters for LLList constructor!");
         }
@@ -46,13 +47,15 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
     // NewChain
     @Override
-    protected LLList<Data> NewChain(long size, LLNode<Data> head, LLNode<Data> tail) {
+    protected LLChainBase<Data> NewChain(long size, LLNode<Data> head, LLNode<Data> tail) {
         /* Essendo il metodo protected, solo all'interno del codice della libreria viene chiamato. */
         /* Assumo che sia tutto corretto a livello di parametri passati. */
 
         headref.Set(head);
         tailref.Set(head); /* Se size == 1 allora head e tail devono essere uguali per forza */
         this.size.Assign(size);
+
+        return new LLList<>(size, head, tail);
     }
 
     /* ************************************************************************ */
@@ -60,6 +63,72 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
     /* ************************************************************************ */
 
     // ...
+
+    @Override
+    public MutableForwardIterator<Data> FIterator() {
+        return new MutableForwardIterator<Data>() {
+
+            final MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
+
+            @Override
+            public boolean IsValid() {
+                return iterator.IsValid();
+            }
+
+            @Override
+            public void Reset() {
+                iterator.Reset();
+            }
+
+            @Override
+            public Data GetCurrent() {
+                return iterator.GetCurrent().Get().Get(); /* Box -> LLNode -> Data */
+            }
+
+            @Override
+            public void SetCurrent(Data dat){
+                iterator.GetCurrent().Get().Set(dat);
+            }
+
+            @Override
+            public Data DatNNext() {
+                return iterator.DatNNext().Get().Get(); /* Box -> LLNode -> Data */
+            }
+        };
+    }
+
+    @Override
+    public MutableBackwardIterator<Data> BIterator() {
+        return new MutableBackwardIterator<Data>() {
+
+            final MutableBackwardIterator<Box<LLNode<Data>>> iterator = BRefIterator();
+
+            @Override
+            public boolean IsValid() {
+                return iterator.IsValid();
+            }
+
+            @Override
+            public void Reset() {
+                iterator.Reset();
+            }
+
+            @Override
+            public Data GetCurrent() {
+                return iterator.GetCurrent().Get().Get(); /* Box -> LLNode -> Data */
+            }
+
+            @Override
+            public void SetCurrent(Data dat){
+                iterator.GetCurrent().Get().Set(dat);
+            }
+
+            @Override
+            public Data DatNPrev() {
+                return iterator.DatNPrev().Get().Get(); /* Box -> LLNode -> Data */
+            }
+        };
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from MutableSequence                  */
@@ -79,7 +148,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             long index = 0;
             MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
 
-            while(iterator.IsValid() && index < limit){
+            while (iterator.IsValid() && index < limit) {
                 iterator.Next();
                 index++;
             }
@@ -89,7 +158,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             long index = size - 1;
             MutableBackwardIterator<Box<LLNode<Data>>> iterator = BRefIterator();
 
-            while(iterator.IsValid() && index > limit){
+            while (iterator.IsValid() && index > limit) {
                 iterator.Prev();
                 index--;
             }
@@ -99,12 +168,12 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
     }
 
     @Override
-    public void SetFirst(Data dat){
+    public void SetFirst(Data dat) {
         SetAt(dat, Natural.ZERO);
     }
 
     @Override
-    public void SetLast(Data dat){
+    public void SetLast(Data dat) {
         Natural pos = Natural.Of(this.size.ToLong() - 1);
         SetAt(dat, pos);
     }
@@ -121,14 +190,14 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             throw new InvalidParameterException("Cannot insert null value in LLList!");
         }
 
-        if(pos.ToLong() == 0){
+        if (pos.ToLong() == 0) {
             LLNode<Data> newNode = new LLNode<>(dat, headref.Get());
             headref.Set(newNode);
             this.Size().Increment();
             return;
         }
 
-        if(pos.ToLong() == size.ToLong()){
+        if (pos.ToLong() == size.ToLong()) {
             LLNode<Data> newNode = new LLNode<>(dat, null);
             tailref.Get().SetNext(newNode);
             tailref.Set(newNode);
@@ -139,13 +208,13 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
         long limit = ExcIfOutOfBound(pos);
         long size = this.size.ToLong();
 
-        if(limit <= size / 2){
+        if (limit <= size / 2) {
             long index = 0;
             MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
 
             LLNode<Data> prevNode = headref.Get(); /* Per sicurezza, e per far stare zitto il compilatore */
 
-            while(iterator.IsValid() && index < limit){
+            while (iterator.IsValid() && index < limit) {
                 prevNode = iterator.GetCurrent().Get();
                 iterator.Next();
                 index++;
@@ -160,7 +229,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
             LLNode<Data> nextNode = tailref.Get(); /* Per sicurezza, e per far stare zitto il compilatore */
 
-            while(iterator.IsValid() && index > limit){
+            while (iterator.IsValid() && index > limit) {
                 nextNode = iterator.GetCurrent().Get();
                 iterator.Prev();
                 index--;
@@ -175,12 +244,12 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
     }
 
     @Override
-    public void InsertFirst(Data dat){
+    public void InsertFirst(Data dat) {
         InsertAt(dat, Natural.ZERO);
     }
 
     @Override
-    public void InsertLast(Data dat){
+    public void InsertLast(Data dat) {
         Natural pos = Natural.Of(this.size.ToLong());
         InsertAt(dat, pos);
     }
