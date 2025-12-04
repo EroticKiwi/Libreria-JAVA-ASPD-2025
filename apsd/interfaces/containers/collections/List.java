@@ -7,22 +7,22 @@ import apsd.interfaces.containers.sequences.MutableSequence;
 public interface List<Data> extends MutableSequence<Data>, InsertableAtSequence<Data>, Chain<Data> { // Must extend MutableSequence, InsertableAtSequence, and Chain
 
     // SubList
+    default List<Data> SubList(Natural from, Natural to) {
+        return (List<Data>) SubSequence(from, to);
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from ExtensibleContainer              */
     /* ************************************************************************ */
 
     @Override
-    /* Poi ci torniamo, non sono convinto del try catch. Vediamo come implementiamo Insert dopo. */
     default boolean Insert(Data dat){
-
-        try{
-            InsertLast(dat);
-            return true;
-        } catch (Exception e){
+        if(Size().ToLong() == Integer.MAX_VALUE){
             return false;
         }
 
+        InsertLast(dat);
+        return true;
     }
 
 }

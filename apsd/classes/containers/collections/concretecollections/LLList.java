@@ -7,10 +7,11 @@ import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.collections.List;
 
-import java.security.InvalidParameterException;
+import java.lang.IllegalArgumentException;
 // import apsd.interfaces.containers.iterators.ForwardIterator;
 import apsd.interfaces.containers.iterators.MutableBackwardIterator;
 import apsd.interfaces.containers.iterators.MutableForwardIterator;
+import apsd.interfaces.containers.sequences.MutableSequence;
 // import apsd.interfaces.containers.sequences.MutableSequence;
 
 /**
@@ -18,43 +19,19 @@ import apsd.interfaces.containers.iterators.MutableForwardIterator;
  */
 public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // Must extend LLChainBase and implement List
 
-    public LLList() {
-    }
+    public LLList() { }
 
     public LLList(TraversableContainer<Data> con) {
         super(con);
     }
 
     protected LLList(long size, LLNode<Data> head, LLNode<Data> tail) {
-
-        /* Il costruttore è protetto dunque siamo NOI a chiamarlo internamente, passandogli i giusti parametri. */
-        /*Testiamo e vediamo come va. */
-
-        /*if (size == 0 || head == null || tail == null) {
-            throw new InvalidParameterException("Invalid parameters for LLList constructor!");
-        }
-
-        // size > 0 && head != null && tail != null
-
-        if(size == 1 && head != tail){
-            throw new InvalidParameterException("Provided size is 1 but head and tail are different nodes!");
-        }
-
-        // size > 1 || head == tail*/
-
-        NewChain(size, head, tail);
+        super(size, head, tail);
     }
 
     // NewChain
     @Override
-    protected LLChainBase<Data> NewChain(long size, LLNode<Data> head, LLNode<Data> tail) {
-        /* Essendo il metodo protected, solo all'interno del codice della libreria viene chiamato. */
-        /* Assumo che sia tutto corretto a livello di parametri passati. */
-
-        headref.Set(head);
-        tailref.Set(head); /* Se size == 1 allora head e tail devono essere uguali per forza */
-        this.size.Assign(size);
-
+    protected LLList<Data> NewChain(long size, LLNode<Data> head, LLNode<Data> tail) {
         return new LLList<>(size, head, tail);
     }
 
@@ -134,11 +111,16 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
     /* Override specific member functions from MutableSequence                  */
     /* ************************************************************************ */
 
+    @Override
+    public MutableSequence<Data> SubSequence(Natural from, Natural to) {
+        return (MutableSequence<Data>) super.SubSequence(from, to);
+    }
+
     // ...
     @Override
     public void SetAt(Data dat, Natural pos) {
         if (dat == null) {
-            throw new InvalidParameterException("Cannot set null value in LLList!");
+            throw new IllegalArgumentException("Cannot set null value in LLList!");
         }
 
         long limit = ExcIfOutOfBound(pos);
@@ -187,7 +169,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
     public void InsertAt(Data dat, Natural pos) {
 
         if (dat == null || pos == null) {
-            throw new InvalidParameterException("Cannot insert null value in LLList!");
+            throw new IllegalArgumentException("Cannot insert null value in LLList!");
         }
 
         if (pos.ToLong() == 0) {

@@ -12,9 +12,9 @@ import apsd.interfaces.containers.iterators.ForwardIterator;
 import apsd.interfaces.containers.iterators.MutableBackwardIterator;
 import apsd.interfaces.containers.iterators.MutableForwardIterator;
 import apsd.interfaces.traits.Predicate;
-// import apsd.interfaces.containers.sequences.Sequence;
+import apsd.interfaces.containers.sequences.Sequence;
 
-import java.security.InvalidParameterException;
+import java.lang.IllegalArgumentException;
 
 /**
  * Object: Abstract chain base implementation on linked-list.
@@ -45,6 +45,12 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         });
     }
 
+    public LLChainBase(long size, LLNode<Data> head, LLNode<Data> tail) {
+        this.size.Assign(size);
+        headref.Set(head);
+        tailref.Set(tail);
+    }
+
     // NewChain
     protected abstract LLChainBase<Data> NewChain(long size, LLNode<Data> head, LLNode<Data> tail);
 
@@ -61,7 +67,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public boolean IsValid() {
-                return current != null;
+                return current.Get() != null;
             }
 
             @Override
@@ -71,16 +77,19 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public Box<LLNode<Data>> GetCurrent() {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 return current;
             }
 
             @Override
             public void SetCurrent(Box<LLNode<Data>> node) {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 current = node;
             }
 
             @Override
             public Box<LLNode<Data>> DatNNext() {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 LLNode<Data> node = current.Get();
                 current = current.Get().GetNext();
                 return new Box<LLNode<Data>>(node);
@@ -96,7 +105,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public boolean IsValid() {
-                return current != null;
+                return current.Get() != null;
             }
 
             @Override
@@ -106,16 +115,20 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public Box<LLNode<Data>> GetCurrent() {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 return current;
             }
 
             @Override
             public void SetCurrent(Box<LLNode<Data>> node) {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 current = node;
             }
 
             @Override
             public Box<LLNode<Data>> DatNPrev() {
+
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
 
                 Box<LLNode<Data>> dat = current;
                 Box<LLNode<Data>> tempBox = headref;
@@ -140,7 +153,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     // ...
     @Override
     public Natural Size() {
-        return Natural.Of(size.ToNatural());
+        return size.ToNatural();
     }
 
     /* ************************************************************************ */
@@ -261,6 +274,53 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         return node.Get();
     }
 
+    @Override
+    public Sequence<Data> SubSequence(Natural from, Natural to) {
+
+        if(from == null || to == null){
+            throw new IllegalArgumentException("Indices cannot be null!");
+        }
+
+        long start = from.ToLong();
+        long end = to.ToLong();
+
+        if(start < 0 || end > size.ToLong() || start > end || end >= Size().ToLong()){
+            throw new IllegalArgumentException("Invalid subsequence range.");
+        }
+
+        LLNode<Data> headNode = null;
+        LLNode<Data> prevNode = null;
+        LLNode<Data> currentNode = null;
+        LLNode<Data> tailNode = null;
+        long index = 0;
+        long size = end - start + 1;
+
+        MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
+
+        for(int i = 0; i < start; i++){
+            iterator.Next();
+        }
+
+        while(iterator.IsValid() && index < size){
+
+            currentNode = new LLNode<>(iterator.GetCurrent().Get().Get());
+            if(prevNode == null){
+                headNode = currentNode;
+            } else {
+                prevNode.SetNext(currentNode);
+            }
+
+
+            prevNode = currentNode;
+            iterator.Next();
+            index++;
+        }
+
+        tailNode = currentNode;
+
+        return NewChain(end - start, headNode, tailNode);
+    }
+
 
     /* ************************************************************************ */
     /* Override specific member functions from RemovableAtSequence              */
@@ -274,7 +334,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         long index = 0L;
 
         /* Caso base primo elemento */
-        if (limit == 0 || size == MutableNatural.ONE) {
+            if (limit == 0 || size.equals(MutableNatural.ONE)) {
             LLNode<Data> node = headref.Get();
             headref.Set(headref.Get().GetNext().Get()); /* Le box sono solo un puntatore ai nodi. Rimangono invariate.*/
             /* Sono i nodi contenuti nelle box a sapere il proprio dato e il proprio successore */
@@ -288,44 +348,28 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
             return node.Get();
         }
 
-        /* Caso base ultimo elemento */
-        if (limit == size.ToLong() - 1) {
-
-            MutableBackwardIterator<Box<LLNode<Data>>> iterator = BRefIterator();
-
-            LLNode<Data> node = tailref.Get();
-
-            iterator.Prev();
-
-            /* Andiamo a settare la tail come il nodo precedente alla tail corrente */
-            tailref.Set(iterator.GetCurrent().Get());
-
-            /* Andiamo a settare a null il successore della tail. */
-            tailref.Get().SetNext(null);
-
-            size.Decrement();
-            return node.Get();
-        }
-
         MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
         Box<LLNode<Data>> prev = null;
 
         while (iterator.IsValid() && index < limit) {
-            iterator.Next();
-            index++;
 
             if (index == limit - 1) {
                 prev = iterator.GetCurrent();
             }
 
+            iterator.Next();
+            index++;
         }
-
-        LLNode<Data> prevNode = prev.Get();
+        LLNode<Data> prevNode = prev.Get(); /* Prev non potrà mai essere null qui */
         LLNode<Data> current = iterator.GetCurrent().Get();
         LLNode<Data> nextNode = iterator.GetCurrent().Get().GetNext().Get();
 
-        prevNode.SetNext(nextNode);
-
+        if(nextNode == null){ /* Rimozione coda */
+            tailref.Set(prevNode);
+            tailref.Get().SetNext(null);
+        } else {
+            prevNode.SetNext(nextNode);
+        }
 
         size.Decrement();
         return current.Get();
@@ -364,7 +408,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         /* In LLChainBase, siccome stiamo usando le Box, non abbiamo il problema del reset dell'iteratore. */
 
         if (fun == null) {
-            throw new InvalidParameterException("Filter function cannot be null!");
+            throw new IllegalArgumentException("Filter function cannot be null!");
         }
 
         Natural originalSize = Size();
@@ -376,7 +420,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         Box<LLNode<Data>> current = null;
         LLNode<Data> node = null;
 
-        while (iterator.IsValid() && iterator.GetCurrent().Get().Get() != null) {
+        while (iterator.IsValid()) {
             current = iterator.GetCurrent();
             node = current.Get();
 

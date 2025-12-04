@@ -38,6 +38,7 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
     public DynLinearVectorBase(Data[] arr){
         super(arr);
+        size = arr.length;
     }
 
     @Override

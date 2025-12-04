@@ -1,6 +1,7 @@
 package apsd.classes.containers.sequences;
 
 import apsd.classes.containers.sequences.abstractbases.LinearVectorBase;
+import apsd.classes.containers.sequences.abstractbases.VectorBase;
 import apsd.classes.utilities.Box;
 import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Natural;
@@ -38,8 +39,8 @@ public class Vector<Data> extends LinearVectorBase<Data> { // Must extend Linear
 
     // NewVector
     @Override
-    protected void NewVector(Data[] arr) {
-        this.arr = arr;
+    protected Vector<Data> NewVector(Data[] arr) {
+        return new Vector<>(arr);
     }
 
 }

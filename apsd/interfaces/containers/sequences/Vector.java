@@ -5,7 +5,7 @@ import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.ReallocableContainer;
 import apsd.interfaces.traits.Predicate;
 
-import java.security.InvalidParameterException;
+import java.security.IllegalArgumentException;
 
 public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data> { // Must extend ReallocableContainer and MutableSequence
 
@@ -82,28 +82,7 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
 
     // SubVector
     default Vector<Data> SubVector(Natural from, Natural to) { /* SubVector inclusivo */
-
-        long start = from.ToLong();
-        long end = to.ToLong();
-        long size = Size().ToLong();
-
-        if (start > end || end >= size) {
-            throw new InvalidParameterException("Indexes are out of bounds or in the incorrect order!");
-        }
-
-        long newSize = end - start + 1;
-
-        apsd.classes.containers.sequences.Vector<Data> newVector =
-                new apsd.classes.containers.sequences.Vector<Data>(Natural.Of(newSize));
-
-        long oldArrIndex = from.ToLong();
-
-        for(long i = 0; i < newSize; i++){
-            newVector.SetAt(this.GetAt(Natural.Of(oldArrIndex)), Natural.Of(i));
-            oldArrIndex++;
-        }
-
-        return newVector;
+        return (Vector<Data>) SubSequence(from, to);
     }
 
     /* ************************************************************************ */

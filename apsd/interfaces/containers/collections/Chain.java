@@ -21,13 +21,17 @@ public interface Chain<Data> extends Set<Data>, RemovableAtSequence<Data> { // M
     // RemoveOccurrences
     default void RemoveOccurrences(Data dat) {
 
+        if (IsEmpty()) {
+            return;
+        }
+
         if (dat == null) {
             throw new IllegalArgumentException("Data parameter can't be null!");
         }
 
         Filter(currentElement -> {
 
-            if (currentElement == dat) {
+            if (currentElement.equals(dat)) {
                 return false;
             }
 
@@ -36,7 +40,9 @@ public interface Chain<Data> extends Set<Data>, RemovableAtSequence<Data> { // M
     }
 
     // SubChain
-    /* default Chain<Data> SubChain(Natural from, Natural to) { } */
+    default Chain<Data> SubChain(Natural from, Natural to) {
+        return (Chain<Data>) SubSequence(from, to);
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from Sequence                         */
@@ -49,7 +55,7 @@ public interface Chain<Data> extends Set<Data>, RemovableAtSequence<Data> { // M
         ForwardIterator<Data> iterator = FIterator();
         MutableNatural index = new MutableNatural(0);
 
-        while(iterator.IsValid() && iterator.GetCurrent() != dat) {
+        while (iterator.IsValid() && iterator.GetCurrent() != dat) {
             iterator.Next();
             index.Increment();
         }

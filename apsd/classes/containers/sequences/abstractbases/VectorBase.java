@@ -8,7 +8,7 @@ import apsd.interfaces.containers.iterators.MutableForwardIterator;
 import apsd.interfaces.containers.sequences.MutableSequence;
 import apsd.interfaces.containers.sequences.Vector;
 
-import java.security.InvalidParameterException;
+import java.lang.IllegalArgumentException;
 
 /**
  * Object: Abstract vector base implementation.
@@ -43,11 +43,11 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
     }
 
     public VectorBase(Data[] arr){
-        NewVector(arr);
+        this.arr = arr;
     }
 
     // NewVector
-    protected abstract void NewVector(Data[] arr);
+    protected abstract VectorBase<Data> NewVector(Data[] arr);
 
     /* ************************************************************************ */
     /* Override specific member functions from ClearableContainer               */
@@ -110,16 +110,19 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
 
             @Override
             public Data GetCurrent() {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated.");}
                 return arr[pos];
             }
 
             @Override
             public void SetCurrent(Data dat) {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated.");}
                 arr[pos] = dat;
             }
 
             @Override
             public Data DatNNext() {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 Data dat = GetCurrent();
                 pos++;
                 return dat;
@@ -150,16 +153,19 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
 
             @Override
             public Data GetCurrent() {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 return arr[pos];
             }
 
             @Override
             public void SetCurrent(Data dat) {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 arr[pos] = dat;
             }
 
             @Override
             public Data DatNPrev() {
+                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
                 Data dat = GetCurrent();
                 pos--;
                 return dat;
@@ -187,7 +193,24 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
 
     @Override
     public MutableSequence<Data> SubSequence(Natural from, Natural to) {
-        return this.SubVector(from, to);
+
+        if(from == null || to == null){
+            throw new IllegalArgumentException("Indices cannot be null!");
+        }
+
+        long start = from.ToLong();
+        long end = to.ToLong();
+
+        if(start < 0 || end >= Size().ToLong() || start > end){
+            throw new IllegalArgumentException("Indices out of range!");
+        }
+
+        Data[] newArr = (Data[]) new Object[(int) (end - start + 1)]; /* E' un cast sicuro */
+        for(int read = (int)start, write = 0; read <= end; read++, write++ ) {
+            newArr[write] = GetAt(Natural.Of(read));
+        }
+
+        return NewVector(newArr);
     }
 
 }
