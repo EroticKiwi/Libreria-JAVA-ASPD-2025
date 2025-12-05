@@ -17,7 +17,7 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
 
     public VSortedChain(VSortedChain<Data> chn) {
         super(chn); /* Copia i dati */
-        super(chn.vec); /* Trasferisce il vettore */
+        //super(chn.vec); /* Trasferisce il vettore */
         /* Quale usare? */
     }
 

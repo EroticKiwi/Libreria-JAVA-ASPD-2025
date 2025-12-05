@@ -15,16 +15,13 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
     @Override
     default void InsertAt(Data dat, Natural pos) { /* INCOMPLETO!!! TORNARE QUI!!! */
 
-        if(pos == null){
-            throw new IllegalArgumentException("Position cannot be null!");
+        if(pos.ToLong() > Size().ToLong()){ /* Non possiamo inserire ad una posizione maggiore della Size() */
+            throw new IndexOutOfBoundsException("InsertAt position out of bounds");
         }
 
-        if (pos.ToLong() < Size().ToLong() - 1) {
-            ShiftRight(pos); /* Shiftiamo a destra di una posizione */
-        } else {
-            Expand();
-        }
-        SetAt(dat, pos); /* Settiamo il valore alla posizione liberata */
+        Expand();
+        ShiftRight(pos);
+        SetAt(dat, pos);
     }
 
     /* ************************************************************************ */

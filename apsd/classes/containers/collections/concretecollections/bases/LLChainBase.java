@@ -27,7 +27,8 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
     // LLChainBase
 
-    public LLChainBase() { }
+    public LLChainBase() {
+    }
 
     public LLChainBase(TraversableContainer<Data> con) {
         size.Assign(con.Size());
@@ -77,19 +78,25 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public Box<LLNode<Data>> GetCurrent() {
-                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
+                if (!IsValid()) {
+                    throw new IllegalStateException("The iterator has terminated.");
+                }
                 return current;
             }
 
             @Override
             public void SetCurrent(Box<LLNode<Data>> node) {
-                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
+                if (!IsValid()) {
+                    throw new IllegalStateException("The iterator has terminated.");
+                }
                 current = node;
             }
 
             @Override
             public Box<LLNode<Data>> DatNNext() {
-                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
+                if (!IsValid()) {
+                    throw new IllegalStateException("The iterator has terminated.");
+                }
                 LLNode<Data> node = current.Get();
                 current = current.Get().GetNext();
                 return new Box<LLNode<Data>>(node);
@@ -115,20 +122,26 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public Box<LLNode<Data>> GetCurrent() {
-                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
+                if (!IsValid()) {
+                    throw new IllegalStateException("The iterator has terminated.");
+                }
                 return current;
             }
 
             @Override
             public void SetCurrent(Box<LLNode<Data>> node) {
-                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
+                if (!IsValid()) {
+                    throw new IllegalStateException("The iterator has terminated.");
+                }
                 current = node;
             }
 
             @Override
             public Box<LLNode<Data>> DatNPrev() {
 
-                if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
+                if (!IsValid()) {
+                    throw new IllegalStateException("The iterator has terminated.");
+                }
 
                 Box<LLNode<Data>> dat = current;
                 Box<LLNode<Data>> tempBox = headref;
@@ -277,14 +290,14 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     @Override
     public Sequence<Data> SubSequence(Natural from, Natural to) {
 
-        if(from == null || to == null){
+        if (from == null || to == null) {
             throw new IllegalArgumentException("Indices cannot be null!");
         }
 
         long start = from.ToLong();
         long end = to.ToLong();
 
-        if(start < 0 || end > size.ToLong() || start > end || end >= Size().ToLong()){
+        if (start < 0 || end > size.ToLong() || start > end || end >= Size().ToLong()) {
             throw new IllegalArgumentException("Invalid subsequence range.");
         }
 
@@ -297,14 +310,14 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
         MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
 
-        for(int i = 0; i < start; i++){
+        for (int i = 0; i < start; i++) {
             iterator.Next();
         }
 
-        while(iterator.IsValid() && index < size){
+        while (iterator.IsValid() && index < size) {
 
             currentNode = new LLNode<>(iterator.GetCurrent().Get().Get());
-            if(prevNode == null){
+            if (prevNode == null) {
                 headNode = currentNode;
             } else {
                 prevNode.SetNext(currentNode);
@@ -334,18 +347,10 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         long index = 0L;
 
         /* Caso base primo elemento */
-            if (limit == 0 || size.equals(MutableNatural.ONE)) {
-            LLNode<Data> node = headref.Get();
-            headref.Set(headref.Get().GetNext().Get()); /* Le box sono solo un puntatore ai nodi. Rimangono invariate.*/
-            /* Sono i nodi contenuti nelle box a sapere il proprio dato e il proprio successore */
-
-            /* Se headref è null significa che il nodo rimosso era il solo e l'unico, dunque va nullata anche la tail */
-            if (headref.IsNull()) {
-                tailref.Set(null);
-            }
-
-            size.Decrement();
-            return node.Get();
+        if (limit == 0 || size.equals(MutableNatural.ONE)) {
+            Data dat = headref.Get().Get();
+            RemoveFirst();
+            return dat;
         }
 
         MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
@@ -364,7 +369,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         LLNode<Data> current = iterator.GetCurrent().Get();
         LLNode<Data> nextNode = iterator.GetCurrent().Get().GetNext().Get();
 
-        if(nextNode == null){ /* Rimozione coda */
+        if (nextNode == null) { /* Rimozione coda */
             tailref.Set(prevNode);
             tailref.Get().SetNext(null);
         } else {
@@ -375,25 +380,35 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         return current.Get();
     }
 
-    /* I metodi di RemovableAtSequence chiamano AtNRemove(Natural pos) che qui gestiscono già tutti i casi possibili */
-    /*@Override
-    public void RemoveFirst(){
-        if(headref.Get() == null){ return; }
+    @Override
+    public void RemoveFirst() {
+        if (headref.Get() == null) {
+            return;
+        }
 
-        AtNRemove(Natural.ZERO);
+        headref.Set(headref.Get().GetNext().Get()); /* Le box sono solo un puntatore ai nodi. Rimangono invariate.*/
+        /* Sono i nodi contenuti nelle box a sapere il proprio dato e il proprio successore */
+
+        /* Se headref è null significa che il nodo rimosso era il solo e l'unico, dunque va nullata anche la tail */
+        if (headref.IsNull()) {
+            tailref.Set(null);
+        }
+
+        size.Decrement();
     }
 
     @Override
-    public void RemoveLast(){
-        if(tailref.Get() == null){ return; }
-
+    public void RemoveLast() {
+        if (tailref.Get() == null) {
+            return;
+        }
         AtNRemove(Natural.Of(size.ToLong() - 1));
     }
 
     // FirstNRemove
 
     // LastNRemove
-     */
+
 
     /* ************************************************************************ */
     /* Override specific member functions from Collection                       */

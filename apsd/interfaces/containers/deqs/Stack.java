@@ -13,6 +13,11 @@ public interface Stack<Data> extends ClearableContainer, InsertableContainer<Dat
 
     // TopNPop
     default Data TopNPop(){
+
+        if(IsEmpty()){
+            return null;
+        }
+
         Data dat = Top();
         Pop();
         return dat;
@@ -20,16 +25,24 @@ public interface Stack<Data> extends ClearableContainer, InsertableContainer<Dat
 
     // SwapTop
     default void SwapTop(Data swapDat){
-        Data Top = Top();
+
+        if(swapDat == null){
+            throw new IllegalArgumentException("Can't swap with null data!");
+        }
+
         Pop();
         Push(swapDat);
-        Push(Top);
     }
 
     // TopNSwap
     default Data TopNSwap(Data swapDat){
-        Data dat = Top();
-        SwapTop(swapDat);
+
+        if(swapDat == null){
+            throw new IllegalArgumentException("Can't swap with null data!");
+        }
+
+        Data dat = TopNPop();
+        Push(swapDat);
         return dat;
     }
 
@@ -43,7 +56,7 @@ public interface Stack<Data> extends ClearableContainer, InsertableContainer<Dat
     // ...
     @Override
     default void Clear(){
-        while(Top() != null){
+        while(!IsEmpty()){
             Pop();
         }
     }
@@ -56,7 +69,11 @@ public interface Stack<Data> extends ClearableContainer, InsertableContainer<Dat
     @Override
     default boolean Insert(Data dat){
 
-        if(Size().ToLong() == Integer.MAX_VALUE){ /* Non saprei, potrebbe essere inutile o sbagliato. */
+        if(dat == null){
+            throw new IllegalArgumentException("Can't insert null data!");
+        }
+
+        if(Size().ToLong() == Integer.MAX_VALUE){
             return false;
         }
 
