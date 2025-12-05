@@ -59,7 +59,17 @@ public interface Set<Data> extends Collection<Data> { // Must extend Collection
     // ...
     @Override
     default boolean IsEqual(IterableContainer<Data> otherContainer){
-        return false;
+
+        if(otherContainer == null || !Size().equals(otherContainer.Size())){
+            return false;
+        }
+
+        if(this == otherContainer){
+            return true;
+        }
+
+
+
     }
 
 }

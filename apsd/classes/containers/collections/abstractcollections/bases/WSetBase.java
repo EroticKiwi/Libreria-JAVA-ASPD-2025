@@ -4,11 +4,9 @@ import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.TraversableContainer;
 import apsd.interfaces.containers.collections.Chain;
 import apsd.interfaces.containers.collections.Set;
-// import apsd.interfaces.containers.collections.Chain;
-// import apsd.interfaces.containers.collections.Set;
-// import apsd.interfaces.containers.iterators.BackwardIterator;
-// import apsd.interfaces.containers.iterators.ForwardIterator;
-// import apsd.interfaces.traits.Predicate;
+import apsd.interfaces.containers.iterators.BackwardIterator;
+import apsd.interfaces.containers.iterators.ForwardIterator;
+import apsd.interfaces.traits.Predicate;
 
 /**
  * Object: Abstract wrapper set base implementation via chain.
@@ -19,9 +17,9 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
 
     // WSetBase
 
-    /*public WSetBase() { // Forse?
-        this.chn = null;
-    }*/
+    public WSetBase() { // Forse?
+        ChainAlloc();
+    }
 
     public WSetBase(Chn chn) {
         this.chn = chn;
@@ -34,7 +32,12 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
 
         }
 
+        ChainAlloc();
 
+        con.TraverseForward(currentElement -> {
+            chn.InsertIfAbsent(currentElement);
+            return false;
+        });
     }
 
     public WSetBase(Chn chn, TraversableContainer<Data> con) {
@@ -46,13 +49,13 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
         this.chn = chn;
 
         con.TraverseForward(currentElement -> {
-            chn.InsertIfAbsent(currentElement);
+            Insert(currentElement);
             return false;
         });
     }
 
     // ChainAlloc
-    protected abstract Chn ChainAlloc(); /* Da capire se deve ritornare void o una Chn (nell'UML è void) */
+    protected abstract void ChainAlloc(); /* Da capire se deve ritornare void o una Chn (nell'UML è void) */
 
     /* ************************************************************************ */
     /* Override specific member functions from Container                        */
@@ -61,7 +64,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
     // ...
 
     @Override
-    public Natural Size(){
+    public Natural Size() {
         return chn.Size();
     }
 
@@ -72,7 +75,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
     // ...
 
     @Override
-    public void Clear(){
+    public void Clear() {
         chn.Clear();
     }
 
@@ -83,7 +86,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
     // ...
 
     @Override
-    public boolean Insert(Data dat){
+    public boolean Insert(Data dat) {
         return chn.InsertIfAbsent(dat); /* POSSIBILE CAUSA DI LOOP INFINITO! */
     }
 
@@ -93,7 +96,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
 
     // ...
     @Override
-    public boolean Remove(Data dat){
+    public boolean Remove(Data dat) {
         return chn.Remove(dat);
     }
 
@@ -101,18 +104,34 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
     /* Override specific member functions from IterableContainer                */
     /* ************************************************************************ */
 
-    // ...
+    @Override
+    public ForwardIterator<Data> FIterator() {
+        return chn.FIterator();
+    }
+
+    @Override
+    public BackwardIterator<Data> BIterator(){
+        return chn.BIterator();
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from Collection                       */
     /* ************************************************************************ */
 
     // ...
+    @Override
+    public boolean Filter(Predicate<Data> fun){
+        return chn.Filter(fun);
+    }
 
     /* ************************************************************************ */
     /* Override specific member functions from Set                              */
     /* ************************************************************************ */
 
     // ...
+    @Override
+    public void Intersection(Set<Data> otherSet){
+        chn.Intersection(otherSet);
+    }
 
 }

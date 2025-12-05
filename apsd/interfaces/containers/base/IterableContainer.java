@@ -18,13 +18,13 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> { //
     BackwardIterator<Data> BIterator();
 
     // IsEqual
-    default boolean IsEqual(IterableContainer<Data> otherContainer){
+    default boolean IsEqual(IterableContainer<Data> otherContainer) {
 
-        if(otherContainer == null || Size() != otherContainer.Size()){
+        if (otherContainer == null || !Size().equals(otherContainer.Size())) {
             return false;
         }
 
-        if(this == otherContainer){
+        if (this == otherContainer) {
             return true;
         }
 
@@ -32,9 +32,9 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> { //
 
         /* Le size sono uguali */
 
-        while(iterator.IsValid()){
+        while (iterator.IsValid()) {
 
-            if(!otherContainer.Exists(iterator.GetCurrent())){
+            if (!otherContainer.Exists(iterator.GetCurrent())) {
                 return false;
             }
 
@@ -49,12 +49,12 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> { //
     /* ************************************************************************ */
 
     @Override
-    default boolean TraverseForward(Predicate<Data> predicate){ /* If pred == false, scorre*/
+    default boolean TraverseForward(Predicate<Data> predicate) { /* If pred == false, scorre*/
         return FIterator().ForEachForward(predicate);
     }
 
     @Override
-    default boolean TraverseBackward(Predicate<Data> predicate){
+    default boolean TraverseBackward(Predicate<Data> predicate) {
         return BIterator().ForEachBackward(predicate);
     }
 }
