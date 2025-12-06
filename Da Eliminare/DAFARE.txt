@@ -1,22 +1,6 @@
-LLSortedChain
-
-// Remove Predecessor
-// Remove Successor
-// PredecessorNRemove
-// SuccessorNRemove
-
 SVARIATI METODI SUBSEQUENCE IN CLASSI/INTERFACCE CHE LO RICHIEDONO!
-
-
-
-
 NEW VECTOR E NEW CHAIN VENGONO USATI PER SUBVECTOR E SUBCHAIN !!!!
 
-LLChainBase
+Dynamic Circular Vectors
 
-// FirstNRemove
-// LastNRemove
-
-Set
-
-// IsEqual
+- Mancano le shift

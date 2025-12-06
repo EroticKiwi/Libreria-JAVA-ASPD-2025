@@ -1,8 +1,7 @@
 package apsd.interfaces.containers.collections;
 
-// import apsd.interfaces.containers.base.IterableContainer;
-
 import apsd.interfaces.containers.base.IterableContainer;
+import apsd.interfaces.containers.iterators.ForwardIterator;
 
 public interface Set<Data> extends Collection<Data> { // Must extend Collection
 
@@ -58,18 +57,31 @@ public interface Set<Data> extends Collection<Data> { // Must extend Collection
 
     // ...
     @Override
-    default boolean IsEqual(IterableContainer<Data> otherContainer){
+    default boolean IsEqual(IterableContainer<Data> otherContainer) {
 
-        if(otherContainer == null || !Size().equals(otherContainer.Size())){
+        if (otherContainer == null || !Size().equals(otherContainer.Size())) {
+
             return false;
+
         }
 
-        if(this == otherContainer){
+
+        if (this == otherContainer) {
+
             return true;
+
         }
 
+        ForwardIterator<Data> iterator = FIterator();
 
+        while(iterator.IsValid()){
+            if(!otherContainer.Exists(iterator.GetCurrent())){
+                return false;
+            }
+            iterator.Next();
+        }
 
+        return true;
     }
 
 }

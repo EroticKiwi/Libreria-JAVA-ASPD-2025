@@ -28,17 +28,18 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> { //
             return true;
         }
 
-        ForwardIterator<Data> iterator = FIterator();
+        ForwardIterator<Data> thisIterator = FIterator();
+        ForwardIterator<Data> otherIterator = otherContainer.FIterator();
 
         /* Le size sono uguali */
 
-        while (iterator.IsValid()) {
-
-            if (!otherContainer.Exists(iterator.GetCurrent())) {
+        while (thisIterator.IsValid() && otherIterator.IsValid()) {
+            if(thisIterator.GetCurrent() != otherIterator.GetCurrent()){
                 return false;
             }
 
-            iterator.Next();
+            thisIterator.Next();
+            otherIterator.Next();
         }
 
         return true;

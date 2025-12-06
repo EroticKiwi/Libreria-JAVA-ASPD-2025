@@ -348,9 +348,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
         /* Caso base primo elemento */
         if (limit == 0 || size.equals(MutableNatural.ONE)) {
-            Data dat = headref.Get().Get();
-            RemoveFirst();
-            return dat;
+            return FirstNRemove();
         }
 
         MutableForwardIterator<Box<LLNode<Data>>> iterator = FRefIterator();
@@ -382,8 +380,9 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
     @Override
     public void RemoveFirst() {
-        if (headref.Get() == null) {
-            return;
+
+        if (IsEmpty()) {
+            throw new IllegalStateException("Cannot remove from empty chain!");
         }
 
         headref.Set(headref.Get().GetNext().Get()); /* Le box sono solo un puntatore ai nodi. Rimangono invariate.*/
@@ -399,15 +398,48 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
     @Override
     public void RemoveLast() {
-        if (tailref.Get() == null) {
+
+        if(IsEmpty()){
+            throw new IllegalStateException("Cannot remove from empty chain!");
+        }
+
+        if(size.equals(MutableNatural.ONE)){
+            RemoveFirst();
             return;
         }
-        AtNRemove(Natural.Of(size.ToLong() - 1));
+
+        MutableBackwardIterator<Box<LLNode<Data>>> iterator = BRefIterator();
+        iterator.Prev();
+
+        iterator.GetCurrent().Get().SetNext(null);
+        tailref.Set(iterator.GetCurrent().Get());
+
+        size.Decrement();
     }
 
-    // FirstNRemove
+    @Override
+    public Data FirstNRemove(){
 
-    // LastNRemove
+        if (IsEmpty()) {
+            throw new IllegalStateException("Cannot remove from empty chain!");
+        }
+
+        Data dat = headref.Get().Get();
+        RemoveFirst();
+        return dat;
+    }
+
+    @Override
+    public Data LastNRemove(){
+
+        if (IsEmpty()) {
+            throw new IllegalStateException("Cannot remove from empty chain!");
+        }
+
+        Data dat = tailref.Get().Get();
+        RemoveLast();
+        return dat;
+    }
 
 
     /* ************************************************************************ */
