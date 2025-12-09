@@ -95,6 +95,21 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
     /* ************************************************************************ */
 
     // ...
+    @Override
+    public void ShiftLeft(Natural pos, Natural num) {
+        super.ShiftLeft(pos, num);
+        Reduce();
+    }
+
+    @Override
+    public void ShiftRight(Natural pos, Natural num) {
+        /* Una chiamata manuale a ShiftRight dunque non accrescerà Capacity. */
+        /* Non ho trovato un modo alternativo per fare una Grow in ShiftRight che non causasse doppia Grow in InsertAt*/
+        size -= num.ToLong();
+        super.ShiftRight(pos, num);
+        size += num.ToLong();
+    }
+
 
     @Override
     protected void ArrayAlloc(Natural num) {

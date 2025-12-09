@@ -5,7 +5,7 @@ import apsd.classes.utilities.Box;
 /**
  * Interface: Container con supporto alla rimozione di un dato.
  */
-public interface RemovableContainer<Data> { // Must extend Container
+public interface RemovableContainer<Data> extends Container{ // Must extend Container
 
     // Remove
     boolean Remove(Data dat);

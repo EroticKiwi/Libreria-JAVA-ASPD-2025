@@ -86,22 +86,43 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
 
     // ...
     @Override
-    public void ShiftRight(Natural pos, Natural num){ /* Sbagliato */
-        long safePos = ExcIfOutOfBound(pos);
+    public void ShiftLeft(Natural pos, Natural num){
+        long idx = ExcIfOutOfBound(pos);
         long size = Size().ToLong();
-        long idx = (start + safePos) % size;
         long len = num.ToLong();
-        if(len > 0){
-            long wrt = (idx + len) % size;
-            long rdr = idx;
-            for(long i = 0; i < len; i++){
-
-                arr[(int)wrt] = arr[(int)rdr];
-                arr[(int)rdr] = null;
-
-                rdr = (rdr + 1) % size;
-                wrt = (wrt + 1) % size;
+        len = (len <= size - idx) ? len : size - idx;
+        if(idx < size - (idx + len)){ /* size - (idx + len) = numero di elementi a destra */
+            /* Il numero di elementi a sinistra è minore del numero di elementi a destra */
+            /* Per evitare spostamenti inutili, ci conviene spostare la TESTA */
+            long iniwrt = idx - 1 + len;
+            long wrt = iniwrt;
+            for(long rdr = wrt - len; rdr >= 0; rdr--, wrt--){
+                Natural natrdr = Natural.Of(rdr);
+                SetAt(GetAt(natrdr), Natural.Of(wrt));
+                SetAt(null, natrdr);
             }
+            for(; iniwrt - wrt < len; wrt--){
+                SetAt(null, Natural.Of(wrt));
+            }
+            start = (start + len) % arr.length;
+        } else {
+            super.ShiftLeft(pos, num);
+        }
+    }
+
+    @Override
+    public void ShiftRight(Natural pos, Natural num){
+        long idx = ExcIfOutOfBound(pos);
+        long size = Size().ToLong();
+        long len = num.ToLong();
+        if(idx < size - idx){ /* Qui len è assente poichè non contiamo elementi da "eliminare" */
+            start = (start - len + arr.length) % arr.length;
+            for(long i = 0; i < idx; i++){
+                SetAt(GetAt(Natural.Of(len + i)), Natural.Of(i));
+                SetAt(null, Natural.Of(len + i));
+            }
+        } else {
+            super.ShiftRight(pos, num);
         }
     }
 

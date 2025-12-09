@@ -115,7 +115,7 @@ abstract public class VChainBase<Data> implements Chain<Data> { // Must implemen
 
     @Override
     public Sequence<Data> SubSequence(Natural from, Natural to){
-
+        return NewChain(vec.SubVector(from, to));
     }
 
     /* ************************************************************************ */
@@ -136,14 +136,18 @@ abstract public class VChainBase<Data> implements Chain<Data> { // Must implemen
     @Override
     public boolean Filter(Predicate<Data> fun){
         Natural oldsize = Size();
+
         if (fun != null) {
-            ForwardIterator<Data> itr = FIterator();
-            while (itr.IsValid()) {
-                Data dat = itr.GetCurrent();
+            long i = 0;
+
+            while (i < Size().ToLong()) {
+                Natural currentPos = Natural.Of(i);
+                Data dat = GetAt(currentPos);
+
                 if (fun.Apply(dat)) {
-                    itr.Next();
+                    i++;
                 } else {
-                    vec.RemoveAt(oldsize);
+                    vec.AtNRemove(currentPos);
                 }
             }
         }

@@ -7,8 +7,6 @@ import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
 import apsd.interfaces.containers.sequences.SortedSequence;
 
-import java.security.IllegalArgumentException;
-
 public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain<Data>, SortedSequence<Data> { // Must extend OrderedChain and SortedSequence
 
     // SearchPredecessor

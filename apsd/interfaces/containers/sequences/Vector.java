@@ -5,8 +5,6 @@ import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.ReallocableContainer;
 import apsd.interfaces.traits.Predicate;
 
-import java.security.IllegalArgumentException;
-
 public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data> { // Must extend ReallocableContainer and MutableSequence
 
     default void ShiftLeft(Natural pos, Natural num) {

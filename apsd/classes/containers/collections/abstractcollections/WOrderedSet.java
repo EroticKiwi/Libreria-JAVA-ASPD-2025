@@ -23,15 +23,8 @@ public class WOrderedSet<Data extends Comparable<Data>> extends WOrderedSetBase<
         super(con);
     }
 
-    public WOrderedSet(Chain<Data> chn, TraversableContainer<Data> con){
-
-        if(chn == null || con == null){
-            throw new IllegalArgumentException("Given Chain and container can't be null!");
-        }
-
-        VSortedChain<Data> sortedChain = new VSortedChain<Data>(chn);
-
-        super(sortedChain, con); /* Credo si faccia così? */
+    public WOrderedSet(SortedChain<Data> chn, TraversableContainer<Data> con){
+        super(chn, con);
     }
 
     @Override

@@ -4,7 +4,7 @@ import apsd.interfaces.containers.collections.OrderedSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public interface OrderedSetTest<Data extends Comparable<? super Data>, Con extends OrderedSet<Data>> extends SetTest<Data, Con> {
+public interface OrderedSetTest<Data extends Comparable<Data>, Con extends OrderedSet<Data>> extends SetTest<Data, Con> {
 
   default void TestMin(Data expectedElement) {
     BeginTest("Min");
