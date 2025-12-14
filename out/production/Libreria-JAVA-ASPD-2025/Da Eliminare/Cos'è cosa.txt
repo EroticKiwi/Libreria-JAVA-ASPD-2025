@@ -2,10 +2,17 @@ Cos'è cosa?
 
 NOTA:
 
+MUTABLENATURAL.ZERO E MUTABLENATURAL.ONE NON VANNO BENE CON GLI INCREMENTATORI!!!! VANNO USATI SOLO PER OPERAZIONI DI VERIFICA!!!!
+SE FACCIAMO INCREMENT SU QUALCOSA A CUI ABBIAMO DATO MUTABLENATURAL.ZERO O MUTABLENATURAL.ONE ROMPIAMO TUTTO PER TUTTI!!!!
+
 SOLO I VETTORI TRATTANO I NULL
 LE LISTE NON POSSONO RICEVERE I NULL!!
 
 Nella RemoveOccurrencies si usa Reduce() alla fine
+
+Ordered VS Sorted:
+Un container ordered è un container i cui elementi possono essere comparati tra di loro (il container estende Comparable).
+Un container sorted è un container che ha un ordine degli elementi in base ai valori (il container è comparable, e in qualche modo estende un container ordered)
 
 [TRAITS]
 - Clearable: Gli oggetti che la implementano possono svuotarla.
@@ -81,4 +88,13 @@ Nella RemoveOccurrencies si usa Reduce() alla fine
 
 (DIFFERENZA TRA VETTORI E CHAIN: (PENSA SEMPRE PER BENE ALLE STRUTTURE DATI VERE E PROPRIE CHE QUESTE "FAMIGLIE" DI SEQUENZE USERANNO NELLE CLASSI!)
 Un Vector, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() sfruttando gli indici e accedendo ad un array. Dunque GetAt() di un Vettore alla fine sarà O(1), ha l'accesso posizionale A LIVELLO DI STRUTTURA DATI, non solo concettuale.
-Una Chain, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() e dovranno esaminare uno ad uno i dati. Dunque GetAt() di una Chain alla fine sarà O(n), devi scorrere fino all'elemento n PER FORZA. )
+Una Chain, e tutte le sue sottoclassi o sottointerfacce prima o poi faranno un override dei metodi GetAt() e SetAt() e dovranno esaminare uno ad uno i dati. Dunque GetAt() di una Chain alla fine sarà O(n), devi scorrere fino all'elemento n PER FORZA.)
+
+(DIFFERENZA TRA CHAIN E LISTE:
+Una Chain permette operazioni di GetAt() e RemoveAt(), dunque operazioni di natura posizionale per la lettura e la rimozione ma in quanto a inserimento eredita solo da InsertableContainer, dunque permette l'inserimento NON posizionale (praticamente l'inserimento in coda.
+Una List permette le operazioni di una Chain (Dunque GetAt(), RemoveAt() e così via) ma permette anche operazioni di Inserimento posizionale (InsertAt), siccome eredita da InsertableAtSequence.
+In pratica, Chain e Liste sono sequenze di elementi connessi tra loro: essendo le Chain delle SEQUENCE, NON PERMETTONO la modifica di elementi presenti nella chain, le liste invece essendo MUTABLE SEQUENCE permettono la modifica degli elementi.)
+
+[CLASSES/CONTAINERS/COLLECTIONS/CONCRETECOLLECTIONS]
+
+VChainBase: E' una chain (dunque una sequenza disordinata ad accesso posizionale che permette operazioni NON dettate dalla posizione) che utilizza un vettore dinamico per la sua implementazione.

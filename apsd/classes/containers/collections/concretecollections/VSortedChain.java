@@ -17,8 +17,6 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
 
     public VSortedChain(VSortedChain<Data> chn) {
         super(chn); /* Copia i dati */
-        //super(chn.vec); /* Trasferisce il vettore */
-        /* Quale usare? */
     }
 
     public VSortedChain(TraversableContainer<Data> con) {
@@ -66,6 +64,12 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
 
             middle = (bottom + top) / 2;
             currentDat = GetAt(Natural.Of(middle));
+
+            if(currentDat == null){
+                bottom = middle + 1;
+                continue;
+            }
+
             compareResult = dat.compareTo(currentDat);
 
             if (compareResult == 0) {
@@ -120,6 +124,12 @@ public class VSortedChain<Data extends Comparable<Data>> extends VChainBase<Data
 
             middle = (bottom + top) / 2;
             currentDat = GetAt(Natural.Of(middle));
+
+            if(currentDat == null){
+                bottom = middle + 1;
+                continue;
+            }
+
             compareResult = dat.compareTo(currentDat);
 
             if (compareResult == 0) {

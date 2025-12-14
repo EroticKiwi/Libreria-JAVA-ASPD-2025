@@ -19,6 +19,7 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
     public DynCircularVectorBase(Natural size) {
         super(size);
+        this.size = size.ToLong();
     }
 
     public DynCircularVectorBase(TraversableContainer<Data> con) {
@@ -68,6 +69,8 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
         if (size > num.ToLong()) {
             size = num.ToLong();
         }
+
+        start = 0L;
     }
 
     /* ************************************************************************ */
@@ -98,16 +101,13 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
     @Override
     public void ShiftLeft(Natural pos, Natural num) {
         super.ShiftLeft(pos, num);
-        Reduce();
+        Reduce(num);
     }
 
     @Override
     public void ShiftRight(Natural pos, Natural num) {
-        /* Una chiamata manuale a ShiftRight dunque non accrescerà Capacity. */
-        /* Non ho trovato un modo alternativo per fare una Grow in ShiftRight che non causasse doppia Grow in InsertAt*/
-        size -= num.ToLong();
+        Expand(num);
         super.ShiftRight(pos, num);
-        size += num.ToLong();
     }
 
 

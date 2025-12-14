@@ -6,6 +6,8 @@ import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
 import apsd.interfaces.containers.sequences.SortedSequence;
+import apsd.interfaces.traits.Accumulator;
+import apsd.interfaces.traits.Predicate;
 
 public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain<Data>, SortedSequence<Data> { // Must extend OrderedChain and SortedSequence
 
@@ -16,13 +18,24 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
             return null;
         }
 
-        Natural pos = Search(dat);
+        MutableNatural datPos = new MutableNatural(); /* Dove si è fermato l'iteratore nella SearchList */
 
-        if (pos == null || pos.ToLong() == 0) {
-            return null;
+        Natural foundPos = SearchList(dat, currentElement ->{
+            datPos.Increment();
+            return false;
+        });
+
+        if(foundPos != null){
+            long idx = foundPos.ToLong();
+            if(idx == 0) return null;
+            return Natural.Of(idx - 1);
         }
 
-        return Natural.Of(pos.ToLong() - 1);
+        if(datPos.ToLong() == 0){
+            return null; /* Non esiste predecessore */
+        }
+
+        return Natural.Of(datPos.ToLong() - 1);
     }
 
     // SearchSuccessor
@@ -32,12 +45,24 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
             return null;
         }
 
-        Natural pos = Search(dat);
-        if (pos == null || pos.ToLong() == Size().ToLong() - 1) {
+        MutableNatural datPos = new MutableNatural(); /* Dove si è fermato l'iteratore nella SearchList */
+
+        Natural foundPos = SearchList(dat, currentElement ->{
+            datPos.Increment();
+            return false;
+        });
+
+        if(foundPos != null){
+           long nextIdx = foundPos.ToLong() + 1;
+           if(nextIdx == Size().ToLong()) return null;
+           return Natural.Of(nextIdx);
+        }
+
+        if(datPos.ToLong() == Size().ToLong()){
             return null;
         }
 
-        return Natural.Of(pos.ToLong() + 1);
+        return Natural.Of(datPos.ToLong());
     }
 
     /* ************************************************************************ */
@@ -46,43 +71,14 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
 
     // ...
     @Override
-    default Natural Search(Data dat) { /* RICERCA BINARIA PER VETTORI */
+    default Natural Search(Data dat) {
 
         if (dat == null) {
-            throw new IllegalArgumentException("dat cannot be null!");
+            throw new IllegalArgumentException("Data parameter can't be null!");
         }
 
-        if(IsEmpty()){
-           return null;
-        }
-
-        Data currentData = null;
-
-        long min = 0;
-        long max = Size().ToLong() - 1;
-        long center;
-
-        int compareResult = 0;
-
-        while (min <= max) {
-            center = (min + max) / 2;
-
-            currentData = GetAt(Natural.Of(center));
-            compareResult = dat.compareTo(currentData);
-
-            if (compareResult == 0) {
-                return Natural.Of(center);
-            }
-
-            if(compareResult < 0){
-                max = center - 1;
-            } else {
-                min = center + 1;
-            }
-
-        }
-
-        return null;
+        /* CounterFunc null poichè tanto ci ritorna la pos dell'elemento */
+        return SearchList(dat, null);
     }
 
     /* ************************************************************************ */
@@ -147,7 +143,7 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
     }
 
     @Override
-    default Data Predecessor(Data dat) { /* Possiamo aggiustare le funzioni per usare la ricerca binaria (Per i vettori)*/
+    default Data Predecessor(Data dat) {
 
         if (dat == null) {
             throw new IllegalArgumentException("dat cannot be null!");
@@ -158,7 +154,7 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
         }
 
         Natural pos = SearchPredecessor(dat);
-        if(pos == null){
+        if (pos == null) {
             return null;
         } else {
             return GetAt(pos);
@@ -177,7 +173,7 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
         }
 
         Natural pos = SearchSuccessor(dat);
-        if(pos == null){
+        if (pos == null) {
             return null;
         } else {
             return GetAt(pos);
@@ -221,4 +217,52 @@ public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain
 
         return successor;
     }
+
+    /* Metodo di Utility */
+    private Natural SearchList(Data datToFind, Predicate<Data> counterFunc){
+
+        /* Indipendentemente da se l'elemento è presente o meno nella chain, sappiamo che l'iteratore si fermerà */
+        /* Nella posizione in cui ci saremmo aspettato l'elemento. Dunque, se per esempio passiamo pos a currentFunc */
+        /* Allora ci interessa pos-1 (predecessore) o pos+1 (successore). */
+        /* Se l'elemento di cui ci interessa il pred o succ non è presente nella lista allora otteniamo null. */
+        /* Se ci interessa solo l'elemento da cercare, non passiamo alcuna funzione contatore, e lasciamo fare alla Search. */
+
+        if (datToFind == null) {
+            throw new IllegalArgumentException("Data parameter can't be null!");
+        }
+
+        if (IsEmpty()) {
+            return null;
+        }
+
+        ForwardIterator<Data> iterator = FIterator();
+        MutableNatural index = new MutableNatural(0);
+        int compareResult = 0;
+
+        while (iterator.IsValid()) {
+
+            compareResult = datToFind.compareTo(iterator.GetCurrent());
+
+            if(compareResult == 0) {
+                return index.ToNatural();
+            }
+
+            if(compareResult < 0){
+                break;
+            }
+
+            iterator.Next();
+            index.Increment();
+
+            if(counterFunc != null){
+                /* La usiamo, se ci serve, per tenere traccia della posizione quando cerchiamo pred e succ. */
+                /* Se cerchiamo pred o succ non è detto che l'elemento passato sia parte della chain. */
+                /* Se cerchiamo solo l'elemento allora passiamo null, dato che la funzione ritorna già quello. */
+                counterFunc.Apply(datToFind);
+            }
+        }
+
+        return null;
+    }
+
 }

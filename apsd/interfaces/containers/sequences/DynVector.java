@@ -19,9 +19,8 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
             throw new IndexOutOfBoundsException("InsertAt position out of bounds");
         }
 
-        Expand();
-        ShiftRight(pos);
-        SetAt(dat, pos);
+        ShiftRight(pos, Natural.ONE); /* Sposta elemento a destra di una posizione (Non avviene nessuna Shift al primo insert) */
+        SetAt(dat, pos); /* Setta alla posizione precedentemente occupata dall'elemento ora spostato */
     }
 
     /* ************************************************************************ */
@@ -31,7 +30,7 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
     @Override
     default Data AtNRemove(Natural pos) {
         Data dat = GetAt(pos);
-        ShiftLeft(pos);
+        ShiftLeft(pos, Natural.ONE);
         return dat;
     }
 
@@ -44,12 +43,12 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
     @Override
     default void ShiftLeft(Natural pos, Natural num) {
         Vector.super.ShiftLeft(pos, num);
-        Reduce();
+        Reduce(num);
     }
 
     @Override
     default void ShiftRight(Natural pos, Natural num) {
-        Expand();
+        Expand(num);
         Vector.super.ShiftRight(pos, num);
     }
 

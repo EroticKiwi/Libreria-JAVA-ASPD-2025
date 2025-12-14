@@ -42,7 +42,7 @@ public interface Set<Data> extends Collection<Data> { // Must extend Collection
             throw new IllegalArgumentException("Set parameter can't be null!");
         }
 
-        if (otherSet.IsEmpty()) {
+        if (IsEmpty() || otherSet.IsEmpty()) {
             return;
         }
 

@@ -20,6 +20,7 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
     public DynLinearVectorBase(Natural size) {
         super(size);
+        this.size = size.ToLong();
     }
 
     public DynLinearVectorBase(TraversableContainer<Data> con) {

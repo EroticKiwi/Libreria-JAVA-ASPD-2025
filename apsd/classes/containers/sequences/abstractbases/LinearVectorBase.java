@@ -56,14 +56,8 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
 
     @Override
     public Data GetAt(Natural pos) {
-
-        if(pos.ToLong() >= Size().ToLong()){
-            return null; /* O lanciare eccezione */
-        }
-
-        int index = (int) pos.ToLong();
-
-        return arr[index];
+        long idx = ExcIfOutOfBound(pos);
+        return arr[(int) idx];
     }
 
     /* ************************************************************************ */
@@ -74,14 +68,8 @@ abstract public class LinearVectorBase<Data> extends VectorBase<Data> { // Must 
 
     @Override
     public void SetAt(Data dat, Natural pos) {
-
-        if(pos.ToLong() < 0 || pos.ToLong() >= Size().ToLong()){
-            return; /* O lanciare eccezione */
-        }
-
-        int index = (int) pos.ToLong();
-
-        arr[index] = dat;
+        long idx = ExcIfOutOfBound(pos);
+        arr[(int) idx] = dat;
     }
 
 }

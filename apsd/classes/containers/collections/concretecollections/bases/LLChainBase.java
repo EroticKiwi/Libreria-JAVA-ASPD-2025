@@ -68,7 +68,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public boolean IsValid() {
-                return current.Get() != null;
+                return !current.IsNull();
             }
 
             @Override
@@ -112,7 +112,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public boolean IsValid() {
-                return current.Get() != null;
+                return !current.IsNull();
             }
 
             @Override
@@ -275,14 +275,18 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
     @Override
     public Data GetFirst() {
-        if (headref.Get() == null) return null;
+        if(headref.Get() == null){
+            return null;
+        }
         LLNode<Data> node = headref.Get();
         return node.Get();
     }
 
     @Override
     public Data GetLast() {
-        if (tailref.Get() == null) return null;
+        if(tailref.Get() == null){
+            return null;
+        }
         LLNode<Data> node = tailref.Get();
         return node.Get();
     }
@@ -291,14 +295,14 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public Sequence<Data> SubSequence(Natural from, Natural to) {
 
         if (from == null || to == null) {
-            throw new IllegalArgumentException("Indices cannot be null!");
+            return null;
         }
 
         long start = from.ToLong();
         long end = to.ToLong();
 
         if (start < 0 || end > size.ToLong() || start > end || end >= Size().ToLong()) {
-            throw new IllegalArgumentException("Invalid subsequence range.");
+            return null;
         }
 
         LLNode<Data> headNode = null;
@@ -382,7 +386,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public void RemoveFirst() {
 
         if (IsEmpty()) {
-            throw new IllegalStateException("Cannot remove from empty chain!");
+            return;
         }
 
         headref.Set(headref.Get().GetNext().Get()); /* Le box sono solo un puntatore ai nodi. Rimangono invariate.*/
@@ -400,7 +404,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public void RemoveLast() {
 
         if(IsEmpty()){
-            throw new IllegalStateException("Cannot remove from empty chain!");
+            return;
         }
 
         if(size.equals(MutableNatural.ONE)){
@@ -421,7 +425,8 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public Data FirstNRemove(){
 
         if (IsEmpty()) {
-            throw new IllegalStateException("Cannot remove from empty chain!");
+            //throw new IndexOutOfBoundsException("Cannot remove from empty chain!");
+            return null;
         }
 
         Data dat = headref.Get().Get();
@@ -433,7 +438,8 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public Data LastNRemove(){
 
         if (IsEmpty()) {
-            throw new IllegalStateException("Cannot remove from empty chain!");
+            //throw new IndexOutOfBoundsException("Cannot remove from empty chain!");
+            return null;
         }
 
         Data dat = tailref.Get().Get();

@@ -62,11 +62,17 @@ public interface Sequence<Data> extends IterableContainer<Data> { // Must extend
 
     // GetFirst
     default Data GetFirst() {
+        if (IsEmpty()) {
+            throw new IndexOutOfBoundsException("Sequence is empty!");
+        }
         return FIterator().GetCurrent();
     }
 
     // GetLast
     default Data GetLast() {
+        if (IsEmpty()) {
+            throw new IndexOutOfBoundsException("Sequence is empty!");
+        }
         return BIterator().GetCurrent();
     }
 

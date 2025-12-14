@@ -52,6 +52,14 @@ public interface Chain<Data> extends Set<Data>, RemovableAtSequence<Data> { // M
     @Override
     default Natural Search(Data dat) {
 
+        if(dat == null){
+            throw new IllegalArgumentException("Data parameter can't be null!");
+        }
+
+        if(IsEmpty()){
+            return null;
+        }
+
         ForwardIterator<Data> iterator = FIterator();
         MutableNatural index = new MutableNatural(0);
 

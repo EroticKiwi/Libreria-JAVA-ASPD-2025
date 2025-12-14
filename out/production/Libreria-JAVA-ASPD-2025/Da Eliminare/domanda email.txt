@@ -1,0 +1,6 @@
+Buon pomeriggio Professore, volevo farle due domande riguardo alla struttura delle classi e delle interfacce della libreria.
+
+La prima riguarda i metodi di utility: dato che non ricordo quali siano i vincoli per le operazioni ridondanti, possiamo creare funzioni private/protected all'interno delle classi/interfacce interessate per operazioni che vengono effettuate spesso, oppure bisogna fare in altro modo?
+
+La seconda riguarda i commenti: siamo liberi di lasciarne all'interno del codice o vanno rimossi prima della consegna?
+Grazie in anticipo.

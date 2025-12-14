@@ -156,6 +156,9 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
     @Override
     public void SetLast(Data dat) {
+        if (IsEmpty()) {
+            throw new IndexOutOfBoundsException("The container is empty!");
+        }
         Natural pos = Natural.Of(this.size.ToLong() - 1);
         SetAt(dat, pos);
     }
@@ -175,6 +178,9 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
         if (pos.ToLong() == 0) {
             LLNode<Data> newNode = new LLNode<>(dat, headref.Get());
             headref.Set(newNode);
+            if (IsEmpty()) {
+                tailref.Set(newNode);
+            }
             this.Size().Increment();
             return;
         }

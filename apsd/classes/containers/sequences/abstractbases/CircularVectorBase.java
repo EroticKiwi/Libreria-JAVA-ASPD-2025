@@ -67,7 +67,8 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
     // ...
     @Override
     public Data GetAt(Natural pos) {
-        return arr[(int)(start + pos.ToLong()) % arr.length];
+        long idx = ExcIfOutOfBound(pos);
+        return arr[(int)((start + idx) % arr.length)]; /* pos = 0 equivarrà sempre alla start */
     }
 
     /* ************************************************************************ */
@@ -77,7 +78,8 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
     // ...
     @Override
     public void SetAt(Data dat, Natural pos) {
-        arr[(int)(start + pos.ToLong()) % arr.length] = dat;
+        long idx = ExcIfOutOfBound(pos);
+        arr[(int)((start + idx) % arr.length)] = dat; /* pos = 0 equivarrà sempre alla start */
     }
 
     /* ************************************************************************ */
@@ -111,15 +113,24 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
     }
 
     @Override
-    public void ShiftRight(Natural pos, Natural num){
+    public void ShiftRight(Natural pos, Natural num) {
         long idx = ExcIfOutOfBound(pos);
         long size = Size().ToLong();
         long len = num.ToLong();
-        if(idx < size - idx){ /* Qui len è assente poichè non contiamo elementi da "eliminare" */
+        len = (len <= size - idx) ? len : size - idx;
+
+        if (idx < size - (idx + len)) {
             start = (start - len + arr.length) % arr.length;
-            for(long i = 0; i < idx; i++){
-                SetAt(GetAt(Natural.Of(len + i)), Natural.Of(i));
-                SetAt(null, Natural.Of(len + i));
+            long wrt = 0;
+            long rdr = len;
+            for (; wrt < idx; wrt++, rdr++) {
+                Natural natrdr = Natural.Of(rdr);
+                Natural natwrt = Natural.Of(wrt);
+                SetAt(GetAt(natrdr), natwrt);
+                SetAt(null, natrdr);
+            }
+            for (; wrt < idx + len; wrt++) {
+                SetAt(null, Natural.Of(wrt));
             }
         } else {
             super.ShiftRight(pos, num);

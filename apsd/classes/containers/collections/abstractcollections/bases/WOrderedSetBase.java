@@ -44,11 +44,17 @@ abstract public class WOrderedSetBase<Data extends Comparable<Data>, Chn extends
 
     @Override
     public Data Min(){
+        if(chn.IsEmpty()){
+            return null;
+        }
         return chn.GetFirst();
     }
 
     @Override
     public Data Max(){
+        if(chn.IsEmpty()){
+            return null;
+        }
         return chn.GetLast();
     }
 

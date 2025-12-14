@@ -109,7 +109,7 @@ public class WStack<Data> implements Stack<Data> { // Must implement Stack
             throw new IllegalStateException("The stack is full!");
         }
 
-        lst.InsertLast(dat);
+        lst.InsertLast(dat); /* Forse bisogna diventare InsertFirst */
     }
 
 }

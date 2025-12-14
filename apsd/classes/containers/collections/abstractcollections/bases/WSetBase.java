@@ -55,7 +55,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
     }
 
     // ChainAlloc
-    protected abstract void ChainAlloc(); /* Da capire se deve ritornare void o una Chn (nell'UML è void) */
+    protected abstract void ChainAlloc();
 
     /* ************************************************************************ */
     /* Override specific member functions from Container                        */
@@ -87,7 +87,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
 
     @Override
     public boolean Insert(Data dat) {
-        return chn.InsertIfAbsent(dat); /* POSSIBILE CAUSA DI LOOP INFINITO! */
+        return chn.InsertIfAbsent(dat);
     }
 
     /* ************************************************************************ */

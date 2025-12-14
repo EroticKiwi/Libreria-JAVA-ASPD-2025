@@ -59,6 +59,9 @@ public interface TraversableContainer<Data> extends MembershipContainer<Data> { 
  /* ************************************************************************ */
     @Override
     default boolean Exists(Data dat){
+        if(IsEmpty()){
+            return false;
+        }
         return TraverseForward(currentElement -> Objects.equals(dat, currentElement)); // Se non sono uguali continui sennò ti fermi
     }
 }

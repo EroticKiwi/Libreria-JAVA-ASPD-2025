@@ -96,11 +96,7 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
 
             @Override
             public boolean IsValid() {
-                if (pos < Size().ToLong()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return pos < Size().ToLong();
             }
 
             @Override
@@ -111,7 +107,7 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
             @Override
             public Data GetCurrent() {
                 if(!IsValid()){ throw new IllegalStateException("The iterator has terminated.");}
-                return arr[pos];
+                return GetAt(Natural.Of(pos));
             }
 
             @Override
@@ -154,7 +150,7 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
             @Override
             public Data GetCurrent() {
                 if(!IsValid()){ throw new IllegalStateException("The iterator has terminated."); }
-                return arr[pos];
+                return GetAt(Natural.Of(pos));
             }
 
             @Override
@@ -195,14 +191,14 @@ abstract public class VectorBase<Data> implements Vector<Data> { // Must impleme
     public MutableSequence<Data> SubSequence(Natural from, Natural to) {
 
         if(from == null || to == null){
-            throw new IllegalArgumentException("Indices cannot be null!");
+            return null;
         }
 
         long start = from.ToLong();
         long end = to.ToLong();
 
         if(start < 0 || end >= Size().ToLong() || start > end){
-            throw new IllegalArgumentException("Indices out of range!");
+            return null;
         }
 
         Data[] newArr = (Data[]) new Object[(int) (end - start + 1)]; /* E' un cast sicuro */
