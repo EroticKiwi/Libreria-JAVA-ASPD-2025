@@ -3,7 +3,7 @@ package test.classes.containers.sequences;
 import apsd.classes.containers.sequences.CircularVector;
 import apsd.classes.utilities.Natural;
 
-public class CircularVectorTest {
+class CircularVectorTest {
 
     public static void main(String[] args) {
 

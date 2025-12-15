@@ -13,7 +13,7 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
     // ...
     @Override
-    default void InsertAt(Data dat, Natural pos) { /* INCOMPLETO!!! TORNARE QUI!!! */
+    default void InsertAt(Data dat, Natural pos) {
 
         if(pos.ToLong() > Size().ToLong()){ /* Non possiamo inserire ad una posizione maggiore della Size() */
             throw new IndexOutOfBoundsException("InsertAt position out of bounds");
@@ -29,6 +29,11 @@ public interface DynVector<Data> extends ResizableContainer, InsertableAtSequenc
 
     @Override
     default Data AtNRemove(Natural pos) {
+
+        if(IsEmpty()){
+            return null;
+        }
+
         Data dat = GetAt(pos);
         ShiftLeft(pos, Natural.ONE);
         return dat;

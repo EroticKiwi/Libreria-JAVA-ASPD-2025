@@ -102,7 +102,13 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
             @Override
             public Data DatNPrev() {
-                return iterator.DatNPrev().Get().Get(); /* Box -> LLNode -> Data */
+                LLNode<Data> datNode = iterator.DatNPrev().Get();
+
+                if(datNode == null){
+                    return null;
+                }
+
+                return datNode.Get(); /* Box -> LLNode -> Data */
             }
         };
     }
@@ -181,7 +187,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             if (IsEmpty()) {
                 tailref.Set(newNode);
             }
-            this.Size().Increment();
+            size.Increment();
             return;
         }
 
@@ -189,7 +195,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             LLNode<Data> newNode = new LLNode<>(dat, null);
             tailref.Get().SetNext(newNode);
             tailref.Set(newNode);
-            this.Size().Increment();
+            this.size.Increment();
             return;
         }
 
@@ -228,7 +234,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             prevNode.SetNext(newNode);
         }
 
-        this.Size().Increment();
+        this.size.Increment();
     }
 
     @Override

@@ -19,6 +19,9 @@ public interface RemovableAtSequence<Data> extends Sequence<Data> { // Must exte
 
     // RemoveFirst
     default void RemoveFirst() {
+        if(IsEmpty()){
+            throw new IndexOutOfBoundsException("The container is empty!");
+        }
         AtNRemove(Natural.ZERO);
     }
 

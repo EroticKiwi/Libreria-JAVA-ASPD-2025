@@ -33,11 +33,12 @@ public interface TraversableContainer<Data> extends MembershipContainer<Data> { 
 
     // FoldBackward
     default <Acc> Acc FoldBackward(Accumulator<Data, Acc> fun, Acc ini) {
-        /* POTREBBE NON FUNZIONARE, TESTA! */
         final Box<Acc> acc = new Box<>(ini);
         if (fun != null) {
             TraverseBackward(dat -> {
-                acc.Set(fun.Apply(dat, acc.Get()));
+                if(dat != null){
+                    acc.Set(fun.Apply(dat, acc.Get()));
+                }
                 return false;
             });
         }

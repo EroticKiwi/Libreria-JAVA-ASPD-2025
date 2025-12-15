@@ -112,7 +112,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public boolean IsValid() {
-                return !current.IsNull();
+                return current != null;
             }
 
             @Override
@@ -147,12 +147,11 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
                 Box<LLNode<Data>> tempBox = headref;
                 Box<LLNode<Data>> prev = null;
 
-                while (!tempBox.IsNull() && tempBox != current) {
+                while (!tempBox.IsNull() && tempBox.Get() != current.Get()) {
                     prev = tempBox;
                     tempBox = tempBox.Get().GetNext();
                 }
 
-                /* Alla fine tempBox sarà uguale a current o a null */
                 current = prev;
                 return dat;
             }
@@ -262,7 +261,13 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
             @Override
             public Data DatNPrev() {
-                return iterator.DatNPrev().Get().Get();
+                LLNode<Data> datNode = iterator.DatNPrev().Get();
+
+                if(datNode == null){
+                    return null;
+                }
+
+                return datNode.Get();
             }
         };
     }
@@ -276,7 +281,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     @Override
     public Data GetFirst() {
         if(headref.Get() == null){
-            return null;
+            throw new IndexOutOfBoundsException();
         }
         LLNode<Data> node = headref.Get();
         return node.Get();
@@ -285,7 +290,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     @Override
     public Data GetLast() {
         if(tailref.Get() == null){
-            return null;
+            throw new IndexOutOfBoundsException();
         }
         LLNode<Data> node = tailref.Get();
         return node.Get();
@@ -347,7 +352,11 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     @Override
     public Data AtNRemove(Natural pos) {
 
-        long limit = ExcIfOutOfBound(pos);
+        if(IsEmpty()){
+            return null;
+        }
+
+        long limit = pos.ToLong();
         long index = 0L;
 
         /* Caso base primo elemento */
@@ -386,7 +395,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public void RemoveFirst() {
 
         if (IsEmpty()) {
-            return;
+            throw new IndexOutOfBoundsException();
         }
 
         headref.Set(headref.Get().GetNext().Get()); /* Le box sono solo un puntatore ai nodi. Rimangono invariate.*/
@@ -404,7 +413,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     public void RemoveLast() {
 
         if(IsEmpty()){
-            return;
+            throw new IndexOutOfBoundsException();
         }
 
         if(size.equals(MutableNatural.ONE)){

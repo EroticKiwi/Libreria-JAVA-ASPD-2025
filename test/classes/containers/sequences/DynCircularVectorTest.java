@@ -4,14 +4,14 @@ import apsd.classes.containers.collections.concretecollections.VSortedChain;
 import apsd.classes.containers.sequences.DynCircularVector;
 import apsd.classes.utilities.Natural;
 
-public class DynCircularVectorTest {
+class DynCircularVectorTest {
 
     public static void main(String[] args) {
         // TestInsert();
         TestOrder();
     }
 
-    public static void TestInsert(){
+    private void TestInsert(){
         DynCircularVector<Long> dynVector = new DynCircularVector<Long>(Natural.Of(2));
         System.out.println(dynVector.Size());
 
@@ -19,7 +19,7 @@ public class DynCircularVectorTest {
         System.out.println(dynVector.Size());
     }
 
-    public static void TestOrder(){
+    private static void TestOrder(){
         DynCircularVector<Long> dynVector = new DynCircularVector<Long>();
 
         VSortedChain<Long> vSortedChain = new VSortedChain<Long>(dynVector);

@@ -67,11 +67,17 @@ public class WQueue<Data> implements Queue<Data> { // Must implement Queue
 
     @Override
     public Data Head(){
+        if(IsEmpty()){
+            return null;
+        }
         return lst.GetFirst();
     }
 
     @Override
     public void Dequeue(){
+        if(IsEmpty()){
+            return;
+        }
         lst.RemoveFirst();
     }
 
