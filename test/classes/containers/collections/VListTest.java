@@ -1,6 +1,8 @@
 package test.classes.containers.collections;
 
 import apsd.classes.containers.collections.concretecollections.VList;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
 class VListTest {
 
@@ -27,6 +29,28 @@ class VListTest {
         });
         System.out.println("Size: " + vlist.Size()); // 9, CORRETTO
 
+        System.out.println(vlist.FoldForward(null, 2L)); // 2, CORRETTO
+        System.out.println(vlist.FoldForward(null, 8L)); // 8, CORRETTO
+
+        System.out.println(vlist.FoldForward((dat, acc) -> acc + dat, 0L)); // 27, CORRETTO
+        System.out.println(vlist.FoldForward((dat, acc) -> acc - dat, 0L)); // -27, CORRETTO
+
+        MutableForwardIterator<Long> iterator = vlist.FIterator();
+
+        while(iterator.IsValid()){
+            System.out.print(iterator.DatNNext()); // [5,0,1,2,5,0,4,9,1], CORRETTO
+        }
+
+        vlist.InsertAt(6L, Natural.Of(2));
+
+        System.out.println("\n");
+
+        vlist.TraverseForward(currentElement ->{ // OTTENGO [5,0,6,1,2,5,0,4,9,1], CORRETTO
+            System.out.println(currentElement);
+            return false;
+        });
+
+        System.out.println("Size: " + vlist.Size()); // 10, CORRETTO
     }
 
 }
