@@ -498,47 +498,6 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
         return current.Get();
     }
 
-    /* Algoritmo visto a lezione, ma che ci tiene nello stesso andamento asintotico della ricerca lineare */
-//    @Override
-//    public Data Successor(Data dat){
-//
-//        if(dat == null){
-//            throw new IllegalArgumentException("Cannot get successor of null value!");
-//        }
-//
-//        if(size.equals(MutableNatural.ZERO)){
-//            return null;
-//        }
-//
-//        LLNode<Data> backupNode = headref.Get(); /* N */
-//        long size = this.size.ToLong(); /* n */
-//        Data successor; /* S */
-//
-//        LLNode<Data> currentNode; /* M */
-//        long tempSize; /* k */
-//
-//        while(size > 0){
-//
-//            currentNode = backupNode; /* M = N*/
-//            tempSize = size / 2; /* k = n/2 */
-//
-//            for(int i = 0; i < tempSize; i++){ /* from 1 to k */
-//                currentNode = currentNode.GetNext().Get(); /* M = M.next */
-//            }
-//
-//            if(currentNode.Get().compareTo(dat) > 0){ /* if M.dat > dat */
-//                size = tempSize; /* n = k */
-//                successor = currentNode.Get(); /* S = M.dat */
-//            } else {
-//                backupNode = currentNode.GetNext().Get(); /* N = M.next */
-//                size = size - tempSize - 1; /* n = n - k - 1 */
-//            }
-//
-//        }
-//
-//        return successor;
-//    }
-
     /* ************************************************************************ */
     /* Override specific member functions from Chain                            */
     /* ************************************************************************ */
