@@ -9,7 +9,7 @@ import apsd.interfaces.containers.base.SortedIterableContainer;
 /**
  * Interface: Sequence & SortedIterableContainer.
  */
-public interface SortedSequence<Data extends Comparable<Data>> extends Sequence<Data>, SortedIterableContainer<Data> { // Must extend Sequence and SortedIterableContainer
+public interface SortedSequence<Data extends Comparable<? super Data>> extends Sequence<Data>, SortedIterableContainer<Data> { // Must extend Sequence and SortedIterableContainer
 
     /* ************************************************************************ */
     /* Override specific member functions from MembershipContainer              */

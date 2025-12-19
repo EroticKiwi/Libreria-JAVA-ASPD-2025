@@ -2,7 +2,7 @@ package apsd.interfaces.containers.collections;
 
 import apsd.classes.utilities.Box;
 
-public interface OrderedSet<Data extends Comparable<Data>> extends Set<Data> { // Must extend Set
+public interface OrderedSet<Data extends Comparable<? super Data>> extends Set<Data> { // Must extend Set
 
     // Min
     default Data Min() {

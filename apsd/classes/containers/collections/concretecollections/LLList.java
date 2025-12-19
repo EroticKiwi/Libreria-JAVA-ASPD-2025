@@ -19,7 +19,8 @@ import apsd.interfaces.containers.sequences.MutableSequence;
  */
 public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // Must extend LLChainBase and implement List
 
-    public LLList() { }
+    public LLList() {
+    }
 
     public LLList(TraversableContainer<Data> con) {
         super(con);
@@ -63,7 +64,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             }
 
             @Override
-            public void SetCurrent(Data dat){
+            public void SetCurrent(Data dat) {
                 iterator.GetCurrent().Get().Set(dat);
             }
 
@@ -96,7 +97,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             }
 
             @Override
-            public void SetCurrent(Data dat){
+            public void SetCurrent(Data dat) {
                 iterator.GetCurrent().Get().Set(dat);
             }
 
@@ -104,7 +105,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             public Data DatNPrev() {
                 LLNode<Data> datNode = iterator.DatNPrev().Get();
 
-                if(datNode == null){
+                if (datNode == null) {
                     return null;
                 }
 
@@ -181,21 +182,15 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             throw new IllegalArgumentException("Cannot insert null value in LLList!");
         }
 
-        if (pos.ToLong() == 0) {
-            LLNode<Data> newNode = new LLNode<>(dat, headref.Get());
-            headref.Set(newNode);
-            if (IsEmpty()) {
-                tailref.Set(newNode);
-            }
-            size.Increment();
+        LLNode<Data> newNode = new LLNode<>(dat, null);
+
+        if (pos.ToLong() == 0) { /* null -> newNode -> next*/
+            AddNode(null, newNode, headref.Get());
             return;
         }
 
         if (pos.ToLong() == size.ToLong()) {
-            LLNode<Data> newNode = new LLNode<>(dat, null);
-            tailref.Get().SetNext(newNode);
-            tailref.Set(newNode);
-            this.size.Increment();
+            AddNode(tailref.Get(), newNode, null);
             return;
         }
 
@@ -215,8 +210,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             }
 
             LLNode<Data> nextNode = iterator.GetCurrent().Get();
-            LLNode<Data> newNode = new LLNode<>(dat, nextNode);
-            prevNode.SetNext(newNode);
+            AddNode(prevNode, newNode, nextNode);
         } else {
             long index = size - 1;
             MutableBackwardIterator<Box<LLNode<Data>>> iterator = BRefIterator();
@@ -230,11 +224,8 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
             }
 
             LLNode<Data> prevNode = iterator.GetCurrent().Get();
-            LLNode<Data> newNode = new LLNode<>(dat, nextNode);
-            prevNode.SetNext(newNode);
+            AddNode(prevNode, newNode, nextNode);
         }
-
-        this.size.Increment();
     }
 
     @Override

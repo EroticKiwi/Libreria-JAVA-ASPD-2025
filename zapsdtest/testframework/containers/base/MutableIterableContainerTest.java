@@ -16,7 +16,7 @@ public interface MutableIterableContainerTest<Data, Con extends MutableIterableC
       assertFalse(iterator.IsValid(), "Iterator is not valid");
     } else {
       assertTrue(iterator.IsValid(), "Iterator is valid");
-      iterator.Next(Natural.Of(steps));
+      iterator.Next(steps);
       assertTrue(iterator.IsValid(), "Iterator is valid");
       Data original = iterator.GetCurrent();
       iterator.SetCurrent(newElement);
@@ -35,7 +35,7 @@ public interface MutableIterableContainerTest<Data, Con extends MutableIterableC
       assertFalse(iterator.IsValid(), "Iterator is not valid");
     } else {
       assertTrue(iterator.IsValid(), "Iterator is valid");
-      iterator.Prev(Natural.Of(steps));
+      iterator.Prev(steps);
       assertTrue(iterator.IsValid(), "Iterator is valid");
       Data original = iterator.GetCurrent();
       iterator.SetCurrent(newElement);

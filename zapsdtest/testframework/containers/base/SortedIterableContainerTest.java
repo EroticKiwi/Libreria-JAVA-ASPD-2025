@@ -4,7 +4,7 @@ import apsd.interfaces.containers.base.SortedIterableContainer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public interface SortedIterableContainerTest<Data extends Comparable<Data>, Con extends SortedIterableContainer<Data>> extends IterableContainerTest<Data, Con> {
+public interface SortedIterableContainerTest<Data extends Comparable<? super Data>, Con extends SortedIterableContainer<Data>> extends IterableContainerTest<Data, Con> {
 
   default void TestSortedOrder() {
     BeginTest("SortedOrder");

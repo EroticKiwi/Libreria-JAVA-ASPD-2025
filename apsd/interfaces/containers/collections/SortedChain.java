@@ -9,7 +9,7 @@ import apsd.interfaces.containers.sequences.SortedSequence;
 import apsd.interfaces.traits.Accumulator;
 import apsd.interfaces.traits.Predicate;
 
-public interface SortedChain<Data extends Comparable<Data>> extends OrderedChain<Data>, SortedSequence<Data> { // Must extend OrderedChain and SortedSequence
+public interface SortedChain<Data extends Comparable<? super Data>> extends OrderedChain<Data>, SortedSequence<Data> { // Must extend OrderedChain and SortedSequence
 
     // SearchPredecessor
     default Natural SearchPredecessor(Data dat) {

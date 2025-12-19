@@ -263,7 +263,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
             public Data DatNPrev() {
                 LLNode<Data> datNode = iterator.DatNPrev().Get();
 
-                if(datNode == null){
+                if (datNode == null) {
                     return null;
                 }
 
@@ -280,7 +280,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
     @Override
     public Data GetFirst() {
-        if(headref.Get() == null){
+        if (headref.Get() == null) {
             throw new IndexOutOfBoundsException();
         }
         LLNode<Data> node = headref.Get();
@@ -289,7 +289,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
     @Override
     public Data GetLast() {
-        if(tailref.Get() == null){
+        if (tailref.Get() == null) {
             throw new IndexOutOfBoundsException();
         }
         LLNode<Data> node = tailref.Get();
@@ -352,7 +352,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     @Override
     public Data AtNRemove(Natural pos) {
 
-        if(IsEmpty()){
+        if (IsEmpty()) {
             return null;
         }
 
@@ -376,18 +376,13 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
             iterator.Next();
             index++;
         }
+
         LLNode<Data> prevNode = prev.Get(); /* Prev non potrà mai essere null qui */
         LLNode<Data> current = iterator.GetCurrent().Get();
         LLNode<Data> nextNode = iterator.GetCurrent().Get().GetNext().Get();
 
-        if (nextNode == null) { /* Rimozione coda */
-            tailref.Set(prevNode);
-            tailref.Get().SetNext(null);
-        } else {
-            prevNode.SetNext(nextNode);
-        }
+        RemoveNode(prevNode, nextNode);
 
-        size.Decrement();
         return current.Get();
     }
 
@@ -412,11 +407,11 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     @Override
     public void RemoveLast() {
 
-        if(IsEmpty()){
+        if (IsEmpty()) {
             throw new IndexOutOfBoundsException();
         }
 
-        if(size.equals(MutableNatural.ONE)){
+        if (size.equals(MutableNatural.ONE)) {
             RemoveFirst();
             return;
         }
@@ -431,7 +426,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     }
 
     @Override
-    public Data FirstNRemove(){
+    public Data FirstNRemove() {
 
         if (IsEmpty()) {
             //throw new IndexOutOfBoundsException("Cannot remove from empty chain!");
@@ -444,7 +439,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     }
 
     @Override
-    public Data LastNRemove(){
+    public Data LastNRemove() {
 
         if (IsEmpty()) {
             //throw new IndexOutOfBoundsException("Cannot remove from empty chain!");
@@ -493,11 +488,6 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
                 current.Set(current.Get().GetNext().Get());
 
-                /* Decommentare se ci sono problemi nei test! */
-                /*if(prev == null){
-                    headref.Set(current.Get());
-                }*/
-
                 if (tailref.Get() == node) {
                     if (prev == null) {
                         tailref.Set(null);
@@ -513,4 +503,42 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
         return !Size().equals(originalSize);
     }
 
+    /* METODI DI UTILITY */
+
+    protected void RemoveNode(LLNode<Data> prevNode, LLNode<Data> nextNode) {
+
+        if (prevNode == null) { /* Caso head; null -> nodeToRemove -> nextNode */
+            headref.Set(nextNode);
+            if (headref.IsNull()) {
+                tailref.Set(null);
+            }
+        } else if (nextNode == null) { /* Caso tail; prevNode -> nodeToRemove -> null */
+            tailref.Set(prevNode);
+            tailref.Get().SetNext(null);
+        } else { /* Caso intermedio; prevNode -> nodeToRemove -> nextNode */
+            prevNode.SetNext(nextNode);
+        }
+
+        size.Decrement();
+    }
+
+    protected void AddNode(LLNode<Data> prevNode, LLNode<Data> newNode, LLNode<Data> nextNode) {
+
+        if(prevNode == null){ /* Inserimento in testa; null -> currentNode -> oldHead */
+            newNode.SetNext(nextNode);
+            headref.Set(newNode);
+            if(nextNode == null){ /* Se la testa era null, dovrò aggiornare anche la coda */
+                tailref.Set(newNode);
+            }
+        } else if(nextNode == null){ /* Inserimento in coda; prevNode -> currentNode -> null*/
+            prevNode.SetNext(newNode);
+            newNode.SetNext(null);
+            tailref.Set(newNode);
+        } else { /* Inserimento intermedio; prevNode -> newNode -> nextNode */
+            prevNode.SetNext(newNode);
+            newNode.SetNext(nextNode);
+        }
+
+        size.Increment();
+    }
 }

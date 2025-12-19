@@ -7,7 +7,7 @@ import zapsdtest.testframework.containers.base.SortedIterableContainerTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public interface SortedSequenceTest<Data extends Comparable<Data>, Con extends SortedSequence<Data>>
+public interface SortedSequenceTest<Data extends Comparable<? super Data>, Con extends SortedSequence<Data>>
   extends SequenceTest<Data, Con>, SortedIterableContainerTest<Data, Con> {
 
   default void TestSearchInSortedSequence(Data element, boolean shouldWork, Natural expectedPosition) {

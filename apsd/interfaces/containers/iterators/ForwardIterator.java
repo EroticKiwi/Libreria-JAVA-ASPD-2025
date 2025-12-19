@@ -32,6 +32,18 @@ public interface ForwardIterator<Data> extends Iterator<Data> { // Must extend I
         }
     }
 
+    default void Next(long num){
+
+        if(!IsValid() || num <= 0){
+            return;
+        }
+
+        for(long i = 0; i < num && IsValid(); i++){
+            DatNNext();
+        }
+
+    }
+
     // DataNNext
     Data DatNNext();
 

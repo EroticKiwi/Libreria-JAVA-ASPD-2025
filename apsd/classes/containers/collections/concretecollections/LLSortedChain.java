@@ -64,10 +64,10 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             throw new IllegalStateException("The container has already reached max capacity!");
         }
 
+        LLNode<Data> newNode = new LLNode<Data>(dat, null);
+
         if (headref.IsNull()) { /* Inserimento in testa con lista vuota */
-            headref.Set(new LLNode<>(dat, null));
-            tailref.Set(headref.Get());
-            size.Increment();
+            AddNode(null, newNode, null);
             return true;
         }
 
@@ -84,25 +84,14 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             compareResult = dat.compareTo(currentNode.Get()); /* if dat < currentNode.Get() ci fermiamo e inseriamo */
 
             if (compareResult <= 0) { /* Inseriamo il nuovo nodo prima di currentNode */
-
-                LLNode<Data> newNode = new LLNode<>(dat, currentNode);
-
-                if (prevNode == null) { /* Inserimento in testa con lista non vuota */
-                    headref.Set(newNode);
-                } else {
-                    prevNode.SetNext(newNode);
-                }
-
-                size.Increment();
+                AddNode(prevNode, newNode, currentNode);
                 return true;
             }
 
             /* Il nuovo nodo è più grande di currentNode */
 
             if (currentNode.GetNext().IsNull()) { /* Inserimento in coda */
-                tailref.Set(new LLNode<>(dat, null));
-                currentNode.SetNext(tailref.Get());
-                size.Increment();
+                AddNode(currentNode, newNode, null);
                 return true;
             }
 
@@ -144,20 +133,7 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             }
 
             if (compareResult == 0) { /* Dato trovato */
-
-                if (prevNode == null) { /* Rimozione in testa*/
-                    headref.Set(currentNode.GetNext().Get());
-                    if (size.ToLong() <= 2) {
-                        tailref.Set(headref.Get());
-                    }
-                } else { /* Rimozione in mezzo */
-                    prevNode.SetNext(currentNode.GetNext().Get());
-                    if (currentNode.GetNext().IsNull()) { /* Rimozione in coda */
-                        tailref.Set(prevNode);
-                    }
-                }
-
-                size.Decrement();
+                RemoveNode(prevNode, currentNode.GetNext().Get());
                 return true;
             }
 
@@ -333,19 +309,7 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             return;
         }
 
-        if (predPredecessor != null) { /* Rimozione in mezzo alla lista*/
-            predPredecessor.SetNext(predecessor.GetNext().Get());
-            if (predecessor.GetNext().IsNull()) { /* Abbiamo rimosso la coda, va aggiornata */
-                tailref.Set(predPredecessor);
-            }
-        } else { /* Rimozione in testa */
-            headref.Set(predecessor.GetNext().Get());
-            if (Size().ToLong() <= 2) {
-                tailref.Set(headref.Get());
-            }
-        }
-
-        size.Decrement();
+        RemoveNode(predPredecessor, predecessor.GetNext().Get());
     }
 
     @Override
@@ -380,19 +344,7 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             iterator.Next();
         }
 
-        if (predecessor == null) { /* Rimozione in testa */
-            headref.Set(current.GetNext().Get());
-            if (Size().ToLong() <= 2) {
-                tailref.Set(headref.Get());
-            }
-        } else { /* Rimozione in mezzo alla lista */
-            predecessor.SetNext(current.GetNext().Get());
-            if (predecessor.GetNext().IsNull()) { /* Rimozione in coda */
-                tailref.Set(predecessor);
-            }
-        }
-
-        size.Decrement();
+        RemoveNode(predecessor, current.GetNext().Get());
     }
 
     @Override
@@ -431,20 +383,7 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             return null;
         }
 
-        if (predPredecessor != null) { /* Rimozione in mezzo alla lista*/
-            predPredecessor.SetNext(predecessor.GetNext().Get());
-            if (predecessor.GetNext().IsNull()) { /* Abbiamo rimosso la coda, va aggiornata */
-                tailref.Set(predPredecessor);
-            }
-        } else { /* Rimozione in testa */
-            headref.Set(predecessor.GetNext().Get());
-            if (Size().ToLong() <= 2) {
-                tailref.Set(headref.Get());
-            }
-        }
-
-        size.Decrement();
-
+        RemoveNode(predPredecessor, predecessor.GetNext().Get());
         return predecessor.Get();
     }
 
@@ -481,20 +420,7 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             iterator.Next();
         }
 
-        if (predecessor == null) { /* Rimozione in testa */
-            headref.Set(current.GetNext().Get());
-            if (Size().ToLong() <= 2) {
-                tailref.Set(headref.Get());
-            }
-        } else { /* Rimozione in mezzo alla lista */
-            predecessor.SetNext(current.GetNext().Get());
-            if (predecessor.GetNext().IsNull()) { /* Rimozione in coda */
-                tailref.Set(predecessor);
-            }
-        }
-
-        size.Decrement();
-
+        RemoveNode(predecessor, current.GetNext().Get());
         return current.Get();
     }
 
@@ -560,19 +486,7 @@ public class LLSortedChain<Data extends Comparable<Data>> extends LLChainBase<Da
             }
 
             if(compareResult == 0){
-                if(prevNode == null){ /* Rimozione in testa */
-                    headref.Set(currentNode.GetNext().Get());
-                    if(size.ToLong() <= 2){
-                        tailref.Set(headref.Get());
-                    }
-                } else { /* Rimozione in mezzo */
-                    prevNode.SetNext(currentNode.GetNext().Get());
-                    if(currentNode.GetNext().IsNull()){ /* Rimozione in coda */
-                        tailref.Set(prevNode);
-                    }
-                }
-
-                size.Decrement();
+                RemoveNode(prevNode, currentNode.GetNext().Get());
             } else {
                 prevNode = currentNode;
                 iterator.Next();

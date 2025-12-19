@@ -33,6 +33,16 @@ public interface BackwardIterator<Data> extends Iterator<Data> { // Must extend 
 
     }
 
+    default void Prev(long num){
+        if(!IsValid() || num <= 0){
+            return;
+        }
+
+        for(long i = 0; i < num && IsValid(); i++){
+            DatNPrev();
+        }
+    }
+
     // DataNPrev
     Data DatNPrev();
 
